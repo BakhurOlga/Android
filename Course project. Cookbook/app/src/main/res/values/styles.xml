@@ -1,0 +1,79 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="homeAsUpIndicator">@drawable/ic_home</item>
+        <item name="actionMenuTextColor">@color/toolbarContentColor</item>
+    </style>
+
+    <style name="PrimaryPage_CategoryTitle_TextStyle">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/category_text_size</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="PrimaryPage_SubCategoryTitle_TextStyle">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/subCategory_text_size</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="PrimaryPage_FragmentDisplayDish_TextStyle">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">left</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="MainToolbarStyle">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="titleTextColor">@color/toolbarContentColor</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:padding">@dimen/toolbar_padding</item>
+    </style>
+
+    <style name="OtherToolbarStyle">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="titleTextColor">@color/toolbarContentColor</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="ItemList_TextStyle">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="titleTextColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/dishTitle_textSize</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="DishDescriptionActivity_Titles_TextStyle">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">left</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="DishDescriptionActivity_GeneralText_TextStyle">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:gravity">left</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="FavoriteDishes_TextStyle">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">left</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+</resources>
