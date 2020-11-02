@@ -90,7 +90,7 @@ public class ContentProviderContacts extends ContentProvider {
             }
             return null;
         }
-        throw new IllegalArgumentException("Failed to insert with the uri " + uri);
+        return null;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ContentProviderContacts extends ContentProvider {
                     return count;
             }
         }
-        throw new IllegalArgumentException("Failed to delete with the uri " + uri);
+        return 0;
     }
 
     @Override
@@ -121,8 +121,7 @@ public class ContentProviderContacts extends ContentProvider {
                     return count;
             }
         }
-        throw new IllegalArgumentException("Failed to delete with the uri " + uri);
-
+        return 0;
     }
 
     private void notifyDataChanged(Uri uri){

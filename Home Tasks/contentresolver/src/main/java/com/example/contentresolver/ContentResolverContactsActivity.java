@@ -46,7 +46,6 @@ public class ContentResolverContactsActivity extends AppCompatActivity {
             int personNameInd = cursor.getColumnIndex("personName");
             int contactTypeInd = cursor.getColumnIndex("contactType");
             int contactDetailsInd = cursor.getColumnIndex("contactDetails");
-            Log.d("TAG", "cursor != null");
             while (cursor.moveToNext()) {
                 Contact contact = new Contact(
                         cursor.getString(personNameInd),
@@ -55,12 +54,9 @@ public class ContentResolverContactsActivity extends AppCompatActivity {
                 );
 
                 contactList.add(contact);
-                Log.d("TAG", "onCreate");
-                Log.d("TAG", contact.toString());
             }
             cursor.close();
         }
-        Log.d("TAG", "cursor == null");
     }
 
     // ADAPTER
