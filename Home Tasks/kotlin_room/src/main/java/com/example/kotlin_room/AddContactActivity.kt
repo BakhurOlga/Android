@@ -66,9 +66,6 @@ class AddContactActivity : AppCompatActivity() {
     }
 
     private val thread = Thread(Runnable {
-        // contact = when {...} - when с возвращаемым типом сделать не получится, т.к. тогда нужна
-        // еще и ветка else, которой ничего кроме null не присвоишь. Null я присвоить контакту не могу,
-        // поскольку в свойствах класса он определен с lateinit.
         when {
             radioPhone.isChecked -> contact = Contact(
                     personName = personNameField.text.toString(),

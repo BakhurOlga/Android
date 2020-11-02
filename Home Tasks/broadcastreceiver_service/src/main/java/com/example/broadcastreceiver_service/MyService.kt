@@ -22,7 +22,7 @@ class MyService : Service() {
 
     private val fileNameInternalStorage = "ActionRecords-InternalStorage.txt"
     private var internalFile: File? = null
-    private lateinit var fileWriter: FileWriter // Тут нормально lateinit или лучше "= null" использовать?
+    private lateinit var fileWriter: FileWriter
 
     private val fileNameExternalStorage = "ActionRecords-ExternalStorage.txt"
     private var externalFile: File? = null
@@ -37,7 +37,7 @@ class MyService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val action = intent?.getStringExtra(ACTION_KEY)
         val date = intent?.getStringExtra(DATE_KEY)
-        recordAction(date!!, action!!, startId)
+        recordAction(date as String, action as String, startId)
         return START_REDELIVER_INTENT
     }
 
@@ -45,14 +45,10 @@ class MyService : Service() {
         super.onDestroy()
         stopForeground(true)
         if (thread.isAlive){
-            thread.interrupt() // не могу проверить, какая ошибка здесь падает, потому что
-            // приложение не запускается из-за Unresolved reference: StorageManager
+            thread.interrupt()
         }
     }
 
-    // По моей могике весь метод должен быть синхронизирован, во-первых, для того, чтобы 2 потока
-    // одновременно не писали в 1 файл, во-вторых, чтобы поток не считывал преференс, который уже
-    // может быть не актуален на момент записи в файл. Это правильно?
     @Synchronized private fun recordAction(date: String, action: String, startId: Int){
         thread = Thread(Runnable {
             createServiceNotification(baseContext)
@@ -61,58 +57,64 @@ class MyService : Service() {
             val storageType = STORAGE_TYPE.valueOf(storageManager.loadStorageType())
 
             when (storageType) {
-                INTERNAL -> {
-                    if (internalFile == null){
-                        try {
-                            internalFile = File(applicationContext.filesDir, fileNameInternalStorage)
-                        }catch (e: IOException){
-                            createExceptionNotification(baseContext)
-                        }
-                    }
-                    generalizedFile = internalFile
-                    // в зависимости от того, какой блок отрабатывает (INTERNAL или EXTERNAL),
-                    // generalizedFile инициализируется разными объектами (internalFile или externalFile),
-                    // благодаря этому можно не копипастить общую часть кода, где идет процесс записи в файл.
-                }
-
-                EXTERNAL -> {
-                    if (isExternalStorageWritable()){
-                        externalStorageVolumes = ContextCompat.getExternalFilesDirs(applicationContext, null)
-                        primaryExternalStorage = (externalStorageVolumes as Array<out File>)[0]
-
-                        if (externalFile == null){
-                            try {
-                                externalFile = File(applicationContext.getExternalFilesDir(null), fileNameExternalStorage)
-                            }catch (e: IOException){
-                                createExceptionNotification(baseContext)
-                            }
-                        }
-                    }else{
-                        createExceptionNotification(baseContext)
-                    }
-                    generalizedFile = externalFile
-                }
+                INTERNAL -> initializeInternalStorage()
+                EXTERNAL -> initializeExternalStorage()
             }
 
-            // это общая часть кода
-            try{
-                fileWriter = FileWriter(generalizedFile, true)
-                fileWriter.write(content)
-                fileWriter.flush()
-                TimeUnit.SECONDS.sleep(5) // Это здесь для того, чтобы уведомление не пропало быстро
+            writeToStorage(content)
+            stopSelf(startId)
+        })
+        thread.start()
+    }
+
+    private fun initializeInternalStorage(){
+        if (internalFile == null){
+            try {
+                internalFile = File(applicationContext.filesDir, fileNameInternalStorage)
             }catch (e: IOException){
                 createExceptionNotification(baseContext)
-            }finally {
+            }
+        }
+        generalizedFile = internalFile
+    }
+
+    private fun initializeExternalStorage(){
+        if (isExternalStorageWritable()){
+            externalStorageVolumes = ContextCompat.getExternalFilesDirs(applicationContext, null)
+            primaryExternalStorage = (externalStorageVolumes as Array<out File>)[0]
+
+            if (externalFile == null){
                 try {
-                    fileWriter.close()
+                    externalFile = File(applicationContext.getExternalFilesDir(null), fileNameExternalStorage)
                 }catch (e: IOException){
                     createExceptionNotification(baseContext)
                 }
             }
+        }else{
+            createExceptionNotification(baseContext)
+        }
+        generalizedFile = externalFile
+    }
 
-            stopSelf(startId)
-        })
-        thread.start()
+    private fun isExternalStorageWritable(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+    }
+
+    private fun writeToStorage(content: String){
+        try{
+            fileWriter = FileWriter(generalizedFile, true)
+            fileWriter.write(content)
+            fileWriter.flush()
+            TimeUnit.SECONDS.sleep(5) // Это здесь для того, чтобы уведомление не пропало быстро
+        }catch (e: IOException){
+            createExceptionNotification(baseContext)
+        }finally {
+            try {
+                fileWriter.close()
+            }catch (e: IOException){
+                createExceptionNotification(baseContext)
+            }
+        }
     }
 
     private fun createServiceNotification(context: Context){
@@ -124,7 +126,6 @@ class MyService : Service() {
         startForeground(SERVICE_NOTIFICATION_ID, notification)
     }
 
-    // это уведомление я добавила от себя. Оно появляется, если в процессе записи в файл произошла ошибка
     private fun createExceptionNotification(context: Context){
         val notification = NotificationCompat.Builder(context, "CHANNEL")
                 .setSmallIcon(R.drawable.icon_exception_notification)
@@ -132,9 +133,5 @@ class MyService : Service() {
                 .setContentText(getText(R.string.exceptionNotificationText))
                 .build()
         startForeground(EXCEPTION_NOTIFICATION_ID, notification)
-    }
-
-    private fun isExternalStorageWritable(): Boolean {
-        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
     }
 }

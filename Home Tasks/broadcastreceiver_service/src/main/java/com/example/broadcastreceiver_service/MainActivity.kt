@@ -1,5 +1,6 @@
 package com.example.broadcastreceiver_service
 
+import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
@@ -11,9 +12,10 @@ import com.example.broadcastreceiver_service.StorageManager.getStorageManager
 
 class MainActivity : AppCompatActivity() {
 
-    private val broadcastReceiver = MyBroadcastReceiver()
     private lateinit var storageManager: StorageManager
     private lateinit var storageType: STORAGE_TYPE
+
+    private lateinit var broadcastReceiver: MyBroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +24,9 @@ class MainActivity : AppCompatActivity() {
         storageManager = getStorageManager(this@MainActivity)
         setStorageType()
 
+        broadcastReceiver = MyBroadcastReceiver()
         registerReceiver()
-        rememberStorageType()
+        saveStorageType()
     }
 
     private fun registerReceiver(){
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(broadcastReceiver)
     }
 
-    private fun rememberStorageType(){
+    private fun saveStorageType(){
         when{
             radioInternalStorage.isChecked -> storageManager.saveStorageType(INTERNAL)
             radioExternalStorage.isChecked -> storageManager.saveStorageType(EXTERNAL)
