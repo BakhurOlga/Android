@@ -9,7 +9,6 @@ public class NotificationManager {
     private static final String KEY_PREFERENCE_CHECKED = "KEY_PREFERENCE_CHECKED";
     private static NotificationManager notificationManager;
     private static SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
     private NOTIFICATION_TYPE firstLoad_notificationType = NOTIFICATION_TYPE.SNACKBAR;
 
     private NotificationManager(Context context) {
@@ -18,13 +17,13 @@ public class NotificationManager {
 
     public static NotificationManager getNotificationManager(Context context) {
         if (notificationManager == null) {
-            notificationManager = new NotificationManager(context.getApplicationContext());
+            notificationManager = new NotificationManager(context);
         }
         return notificationManager;
     }
 
     public void saveChoice(NOTIFICATION_TYPE notificationType) {
-        editor = preferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString(KEY_PREFERENCE_CHECKED, notificationType.name());
         editor.apply();
     }

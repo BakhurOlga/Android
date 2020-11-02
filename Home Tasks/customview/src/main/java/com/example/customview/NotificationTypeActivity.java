@@ -1,6 +1,10 @@
 package com.example.customview;
 
+import android.content.Context;
+import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -8,14 +12,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
+import static com.example.customview.NOTIFICATION_TYPE.SNACKBAR;
+import static com.example.customview.NOTIFICATION_TYPE.TOAST;
 
 public class NotificationTypeActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private SwitchCompat switchButton;
     private ImageView saveButton;
-    private NotificationManager notificationManager = NotificationManager.getNotificationManager(this);
-    private NOTIFICATION_TYPE notifcationType;
+
+    private NotificationManager notificationManager;
+    private NOTIFICATION_TYPE notificationType;
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, NotificationTypeActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +36,14 @@ public class NotificationTypeActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         saveButton = findViewById(R.id.save);
         switchButton = findViewById(R.id.switchNotificationType);
-        notifcationType = NOTIFICATION_TYPE.valueOf(notificationManager.loadChoice());
 
-        implementNotificationType(notifcationType);
+        notificationManager = NotificationManager.getNotificationManager(this);
+        notificationType = NOTIFICATION_TYPE.valueOf(notificationManager.loadChoice());
+
+        implementNotificationType(notificationType);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,13 +52,14 @@ public class NotificationTypeActivity extends AppCompatActivity {
                 finish();
             }
         });
+        Log.d("TAG", "onCreate");
     }
 
     private void setSwitchButton() {
         if (switchButton.isChecked()) {
-            notificationManager.saveChoice(NOTIFICATION_TYPE.SNACKBAR);
+            notificationManager.saveChoice(SNACKBAR);
         } else {
-            notificationManager.saveChoice(NOTIFICATION_TYPE.TOAST);
+            notificationManager.saveChoice(TOAST);
         }
     }
 

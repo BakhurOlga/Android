@@ -12,7 +12,6 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +20,8 @@ public class CustomView extends View {
     interface TouchActionListener {
         void onTouchDown(int x, int y);
     }
+
+    private TouchActionListener touchActionListener;
 
     private int radiusInnerCircle;
     private int radiusOuterCircle;
@@ -40,7 +41,8 @@ public class CustomView extends View {
     private Paint paintRightTopSector = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private RectF sector = new RectF();
-    private TouchActionListener touchActionListener;
+    private RectF innerCircle = new RectF();
+
 
     private List<String> colorList = Arrays.asList("#FF6720", "#ECB7C9", "#00BCD4", "#D11A88",
             "#009688", "#DAEA43", "#A7DDF6", "#EF1505", "#086A57", "#5B086A", "#8A9BCD", "#FFF6A7",
@@ -75,47 +77,48 @@ public class CustomView extends View {
         screenCenterY = h / 2;
     }
 
-//    private void adjustPaint(){
-//        paintRightBottomSector.setColor(colorRightBottomSector);
-//        paintRightBottomSector.setStyle(Paint.Style.FILL);
-//
-//        paintLeftBottomSector.setColor(colorLeftBottomSector);
-//        paintLeftBottomSector.setStyle(Paint.Style.FILL);
-//
-//        paintLeftTopSector.setColor(colorLeftTopSector);
-//        paintLeftTopSector.setStyle(Paint.Style.FILL);
-//
-//        paintRightTopSector.setColor(colorRightTopSector);
-//        paintRightTopSector.setStyle(Paint.Style.FILL);
-//
-//        paintInnerCircle.setColor(colorInnerCircle);
-//        paintInnerCircle.setStyle(Paint.Style.FILL);
-//    }
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        initializePaintInstances();
+        setSectors();
+    }
+
+    private void initializePaintInstances(){
+        paintRightBottomSector.setColor(colorRightBottomSector);
+        paintRightBottomSector.setStyle(Paint.Style.FILL);
+
+        paintLeftBottomSector.setColor(colorLeftBottomSector);
+        paintLeftBottomSector.setStyle(Paint.Style.FILL);
+
+        paintLeftTopSector.setColor(colorLeftTopSector);
+        paintLeftTopSector.setStyle(Paint.Style.FILL);
+
+        paintRightTopSector.setColor(colorRightTopSector);
+        paintRightTopSector.setStyle(Paint.Style.FILL);
+
+        paintInnerCircle.setColor(colorInnerCircle);
+        paintInnerCircle.setStyle(Paint.Style.FILL);
+    }
+
+    private void setSectors(){
+        sector.set(screenCenterX - radiusOuterCircle, screenCenterY - radiusOuterCircle,
+                screenCenterX + radiusOuterCircle, screenCenterY + radiusOuterCircle);
+
+        innerCircle.set(screenCenterX - radiusInnerCircle, screenCenterY - radiusInnerCircle,
+                screenCenterX + radiusInnerCircle, screenCenterY + radiusInnerCircle);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-//        adjustPaint();
-        sector.set(screenCenterX - radiusOuterCircle, screenCenterY - radiusOuterCircle,
-                screenCenterX + radiusOuterCircle, screenCenterY + radiusOuterCircle);
         canvas.drawArc(sector, 0, 90, true, paintRightBottomSector);
-
-        sector.set(screenCenterX - radiusOuterCircle, screenCenterY - radiusOuterCircle,
-                screenCenterX + radiusOuterCircle, screenCenterY + radiusOuterCircle);
         canvas.drawArc(sector, 90, 90, true, paintLeftBottomSector);
-
-        sector.set(screenCenterX - radiusOuterCircle, screenCenterY - radiusOuterCircle,
-                screenCenterX + radiusOuterCircle, screenCenterY + radiusOuterCircle);
         canvas.drawArc(sector, 180, 90, true, paintLeftTopSector);
-
-        sector.set(screenCenterX - radiusOuterCircle, screenCenterY - radiusOuterCircle,
-                screenCenterX + radiusOuterCircle, screenCenterY + radiusOuterCircle);
         canvas.drawArc(sector, 270, 90, true, paintRightTopSector);
-
-        sector.set(screenCenterX - radiusInnerCircle, screenCenterY - radiusInnerCircle,
-                screenCenterX + radiusInnerCircle, screenCenterY + radiusInnerCircle);
-        canvas.drawOval(sector, paintInnerCircle);
+        canvas.drawOval(innerCircle, paintInnerCircle);
     }
 
     @Override
@@ -138,6 +141,7 @@ public class CustomView extends View {
 
             if (Math.pow(radiusInnerCircle, 2) <= Math.pow((pointX - screenCenterX), 2) + Math.pow((pointY - screenCenterY), 2)
                     && Math.pow(radiusOuterCircle, 2) >= Math.pow((pointX - screenCenterX), 2) + Math.pow((pointY - screenCenterY), 2)) {
+
                 if (pointX > screenCenterX && pointY > screenCenterY) {
                     colorRightBottomSector = changeColor();
                 }
