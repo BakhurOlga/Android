@@ -1,0 +1,58 @@
+package com.olg.bakhur.presenter
+
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.olg.bakhur.R
+import com.olg.bakhur.data.PopularMovies
+import kotlinx.android.synthetic.main.activity_movie.*
+import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
+
+
+
+class PopularMovieListFragment : Fragment() {
+
+    private lateinit var movieViewModel: MovieViewModel
+    private var movieList: MutableList<PopularMovies> = mutableListOf()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View =
+        inflater.inflate(R.layout.fragment_popular_movie_list, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+        movieViewModel.popularMovieList.observe(PopularMovieListFragment@ this, Observer { popularMovieList ->
+            movieList = popularMovieList.popularMovieList
+
+            initRecyclerViewAdapter(movieList) // ресайклер не должен здесь создаваться каждый раз, когда приходят обновления из лайв даты. Он здесь должен только обновляться.
+//            (recyclerPopularMovieList.adapter as PopularMovieListAdapter).updateMovieList(movieList) // <- если так сделать, то обновления приходят, но не отображаются
+        })
+    }
+
+    private fun initRecyclerViewAdapter(list: MutableList<PopularMovies>) {
+        recyclerPopularMovieList.apply {
+            adapter = PopularMovieListAdapter(list, object : OnItemMovieClickListener {
+                override fun displayMovieDetails(id: Int) {
+                    val bundle = Bundle()
+                    bundle.putInt(MovieDetailsFragment.KEY_BUNDLE_MOVIE_ID, id)
+                    findNavController().navigate(R.id.action_popularMovieListFragment_to_movieDetailsFragment, bundle)
+                }
+            })
+            layoutManager = LinearLayoutManager(PopularMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
+        }
+    }
+}
