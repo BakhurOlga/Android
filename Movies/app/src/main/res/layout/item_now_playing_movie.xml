@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center_vertical|right"
             android:text="@string/average_vote"
             style="@style/MovieTitle_TextStyle"
             android:textSize="@dimen/mark_text_size_list"/>
@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center_vertical|left"
             style="@style/MovieTitle_TextStyle"
             android:textSize="@dimen/mark_text_size_list"
             tools:text="5.0"/>
@@ -42,8 +42,8 @@
 
     <ImageView
         android:id="@+id/imageViewPosterItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="640dp"
         android:layout_gravity="center"
         android:scaleType="fitStart"
         tools:src="@drawable/ic_launcher_background" />
