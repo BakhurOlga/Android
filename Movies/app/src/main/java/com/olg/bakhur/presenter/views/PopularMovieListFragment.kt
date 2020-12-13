@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.server_pojo.PopularMovies
-import com.olg.bakhur.domain.viewmodels.MovieViewModel
+import com.olg.bakhur.presenter.viewmodels.MovieViewModel
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import com.olg.bakhur.presenter.adapters.PopularMovieListAdapter
 import kotlinx.android.synthetic.main.activity_movie.*
@@ -33,7 +33,7 @@ class PopularMovieListFragment : Fragment() { // по нажатии на кно
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerViewAdapter(movieList)
+        setUpAdapter(movieList)
     }
 
     override fun onResume() {
@@ -46,7 +46,7 @@ class PopularMovieListFragment : Fragment() { // по нажатии на кно
         })
     }
 
-    private fun initRecyclerViewAdapter(list: MutableList<PopularMovies>) {
+    private fun setUpAdapter(list: MutableList<PopularMovies>) {
         recyclerPopularMovieList.apply {
             adapter = PopularMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {

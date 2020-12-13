@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.server_pojo.NowPlayingMovies
-import com.olg.bakhur.domain.viewmodels.MovieViewModel
+import com.olg.bakhur.presenter.viewmodels.MovieViewModel
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import com.olg.bakhur.presenter.adapters.NowPlayingMovieListAdapter
-import com.olg.bakhur.presenter.adapters.PopularMovieListAdapter
 import kotlinx.android.synthetic.main.fragment_now_playing_movie_list.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 
@@ -34,7 +33,7 @@ class NowPlayingMovieListFragment : Fragment() { // по нажатии на к�
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerViewAdapter(movieList)
+        setUpAdapter(movieList)
     }
 
     override fun onResume() {
@@ -47,7 +46,7 @@ class NowPlayingMovieListFragment : Fragment() { // по нажатии на к�
         })
     }
 
-    private fun initRecyclerViewAdapter(list: MutableList<NowPlayingMovies>) {
+    private fun setUpAdapter(list: MutableList<NowPlayingMovies>) {
         recyclerNowPlayingMovieList.apply {
             adapter = NowPlayingMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {

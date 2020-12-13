@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
-import com.olg.bakhur.domain.viewmodels.MovieViewModel
+import com.olg.bakhur.presenter.viewmodels.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 class MovieDetailsFragment : Fragment() {

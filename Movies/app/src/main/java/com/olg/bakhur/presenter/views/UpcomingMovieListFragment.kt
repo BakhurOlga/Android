@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.server_pojo.UpcomingMovie
-import com.olg.bakhur.domain.viewmodels.MovieViewModel
-import com.olg.bakhur.presenter.adapters.PopularMovieListAdapter
+import com.olg.bakhur.presenter.viewmodels.MovieViewModel
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import com.olg.bakhur.presenter.adapters.UpcomingMovieListAdapter
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
@@ -34,7 +33,7 @@ class UpcomingMovieListFragment : Fragment() { // по нажатии на кн�
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerViewAdapter(movieList)
+        setUpAdapter(movieList)
     }
 
     override fun onResume() {
@@ -47,7 +46,7 @@ class UpcomingMovieListFragment : Fragment() { // по нажатии на кн�
         })
     }
 
-    private fun initRecyclerViewAdapter(list: MutableList<UpcomingMovie>) {
+    private fun setUpAdapter(list: MutableList<UpcomingMovie>) {
         recyclerUpcomingMovieList.apply {
             adapter = UpcomingMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {
