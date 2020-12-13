@@ -12,15 +12,14 @@ import com.olg.bakhur.data.server_pojo.NowPlayingMovies
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
-class NowPlayingMovieListAdapter(
-    val nowPlayingMoviesList: MutableList<NowPlayingMovies>,
-    private val onItemMovieClickListener: OnItemMovieClickListener
-) :
+class NowPlayingMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :
     RecyclerView.Adapter<NowPlayingMovieListAdapter.NowPlayingMovieListViewHolder>() {
+
+    var nowPlayingMoviesList: MutableList<NowPlayingMovies> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingMovieListViewHolder =
         NowPlayingMovieListViewHolder(itemView = parent.run {
-            LayoutInflater.from(context).inflate(R.layout.item_now_playing_movie, this, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_now_playing_movie, parent, false)
         })
 
     override fun onBindViewHolder(holder: NowPlayingMovieListViewHolder, position: Int) {
@@ -29,7 +28,7 @@ class NowPlayingMovieListAdapter(
 
     override fun getItemCount(): Int = nowPlayingMoviesList.size
 
-    fun updateMovieList(newNowPlayingMovies: MutableList<NowPlayingMovies>) {
+    fun setData(newNowPlayingMovies: MutableList<NowPlayingMovies>) {
         nowPlayingMoviesList.apply {
             clear()
             addAll(newNowPlayingMovies)
@@ -41,8 +40,6 @@ class NowPlayingMovieListAdapter(
 
         fun bind(nowPlayingMovie: NowPlayingMovies, onItemMovieClickListener: OnItemMovieClickListener) {
             with(nowPlayingMovie) {
-
-                Log.d("TAG", nowPlayingMovie.toString())
 
                 itemView.apply {
                     textViewMovieTitleItem.text = title

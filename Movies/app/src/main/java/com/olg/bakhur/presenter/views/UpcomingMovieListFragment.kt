@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.server_pojo.UpcomingMovie
 import com.olg.bakhur.domain.viewmodels.MovieViewModel
+import com.olg.bakhur.presenter.adapters.PopularMovieListAdapter
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import com.olg.bakhur.presenter.adapters.UpcomingMovieListAdapter
+import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 import kotlinx.android.synthetic.main.fragment_upcoming_movie_list.*
 
-class UpcomingMovieListFragment : Fragment() {
+class UpcomingMovieListFragment : Fragment() { // по нажатии на кнопку back не переходит на предыдущий экран. Остается пустой экран активити
 
     private lateinit var movieViewModel: MovieViewModel
-    private var movieList: MutableList<UpcomingMovie> = mutableListOf()
+    private var movieList: MutableList<UpcomingMovie> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,23 +34,29 @@ class UpcomingMovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initRecyclerViewAdapter(movieList)
+    }
+
+    override fun onResume() {
+        super.onResume()
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieViewModel.upcomingMoviesList.observe(UpcomingMovieListFragment@this, Observer {  upcomingMovieList ->
             movieList = upcomingMovieList.upcomingMovieList
-
-            initRecyclerViewAdapter(movieList)
+            val adapter = recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
+            adapter.setData(movieList)
         })
     }
 
     private fun initRecyclerViewAdapter(list: MutableList<UpcomingMovie>) {
         recyclerUpcomingMovieList.apply {
-            adapter = UpcomingMovieListAdapter(list, object : OnItemMovieClickListener {
+            adapter = UpcomingMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {
                     val bundle = Bundle()
                     bundle.putInt(MovieDetailsFragment.KEY_BUNDLE_MOVIE_ID, id)
                     findNavController().navigate(R.id.action_upcomingMovieListFragment_to_movieDetailsFragment, bundle)
                 }
             })
+            (adapter as UpcomingMovieListAdapter).upcomingMoviesList = list
             layoutManager =
                 LinearLayoutManager(UpcomingMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }

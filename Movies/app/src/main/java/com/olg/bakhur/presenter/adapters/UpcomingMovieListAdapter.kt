@@ -11,14 +11,14 @@ import com.olg.bakhur.data.server_pojo.UpcomingMovie
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
-class UpcomingMovieListAdapter(val upcomingMoviesList: MutableList<UpcomingMovie>,
-                               private val onItemMovieClickListener: OnItemMovieClickListener
-) :
+class UpcomingMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :
     RecyclerView.Adapter<UpcomingMovieListAdapter.UpcomingMovieListViewHolder>() {
+
+    var upcomingMoviesList: MutableList<UpcomingMovie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingMovieListViewHolder =
         UpcomingMovieListViewHolder(itemView = parent.run {
-            LayoutInflater.from(context).inflate(R.layout.item_upcoming_movie, this, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_upcoming_movie, parent, false)
         })
 
     override fun onBindViewHolder(holder: UpcomingMovieListViewHolder, position: Int) {
@@ -27,7 +27,7 @@ class UpcomingMovieListAdapter(val upcomingMoviesList: MutableList<UpcomingMovie
 
     override fun getItemCount(): Int = upcomingMoviesList.size
 
-    fun updateMovieList(newUpcomingMoviesList: MutableList<UpcomingMovie>) {
+    fun setData(newUpcomingMoviesList: MutableList<UpcomingMovie>) {
         upcomingMoviesList.apply {
             clear()
             addAll(newUpcomingMoviesList)

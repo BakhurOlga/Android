@@ -13,16 +13,15 @@ import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_popular_movie.view.*
 
 
-class PopularMovieListAdapter(
-    val popularMoviesList: MutableList<PopularMovies>,
-    private val onItemMovieClickListener: OnItemMovieClickListener
-) :
+class PopularMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :
     RecyclerView.Adapter<PopularMovieListAdapter.PopularMovieListViewHolder>() {
+
+    var popularMoviesList: MutableList<PopularMovies> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMovieListViewHolder =
         PopularMovieListViewHolder(
             itemView = parent.run {
-            LayoutInflater.from(context).inflate(R.layout.item_popular_movie, this, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_popular_movie, parent, false)
         })
 
     override fun onBindViewHolder(holder: PopularMovieListViewHolder, position: Int) {
@@ -31,12 +30,12 @@ class PopularMovieListAdapter(
 
     override fun getItemCount(): Int = popularMoviesList.size
 
-    fun updateMovieList(newMoviesList: MutableList<PopularMovies>) {
+    fun setData(newMoviesList: MutableList<PopularMovies>) {
         popularMoviesList.apply {
             clear()
             addAll(newMoviesList)
         }
-        notifyDataSetChanged() 
+        notifyDataSetChanged()
     }
 
     class PopularMovieListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

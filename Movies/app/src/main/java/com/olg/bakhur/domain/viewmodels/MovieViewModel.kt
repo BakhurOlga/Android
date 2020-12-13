@@ -26,7 +26,7 @@ class MovieViewModel : ViewModel() {
         emit(retrivedPopularMoviesList)
     }
 
-    val latestMovieList = liveData(Dispatchers.IO) {
+    val nowPlayingMovieList = liveData(Dispatchers.IO) {
         val retrivedLatestMoviesList = repository.getNowPlayingMoviesList()
 
         emit(retrivedLatestMoviesList)
