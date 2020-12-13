@@ -1,7 +1,7 @@
-package com.olg.bakhur.data
+package com.olg.bakhur.application
 
 import com.google.gson.GsonBuilder
-import com.olg.bakhur.AppConstants
+import com.olg.bakhur.data.networking.ApiService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -29,7 +29,7 @@ object RetrofitService {
 
     fun retrofit(): Retrofit = Retrofit.Builder()
         .client(okHttpClient)
-        .baseUrl("https://api.themoviedb.org/3/")
+        .baseUrl(AppConstants.apiBaseUrl)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 

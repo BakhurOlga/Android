@@ -1,7 +1,6 @@
-package com.olg.bakhur.presenter
+package com.olg.bakhur.presenter.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
-import com.olg.bakhur.data.PopularMovies
+import com.olg.bakhur.data.server_pojo.PopularMovies
+import com.olg.bakhur.domain.viewmodels.MovieViewModel
+import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
+import com.olg.bakhur.presenter.adapters.PopularMovieListAdapter
 import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 

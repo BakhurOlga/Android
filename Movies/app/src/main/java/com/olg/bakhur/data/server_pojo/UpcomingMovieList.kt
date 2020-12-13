@@ -1,10 +1,10 @@
-package com.olg.bakhur.data
+package com.olg.bakhur.data.server_pojo
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class PopularMovieList(
+data class UpcomingMovieList(
     @SerializedName("results")
     @Expose
-    val popularMovieList: MutableList<PopularMovies>
+    val upcomingMovieList: MutableList<UpcomingMovie>
 )

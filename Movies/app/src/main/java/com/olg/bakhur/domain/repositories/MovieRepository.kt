@@ -1,6 +1,6 @@
-package com.olg.bakhur.domain
+package com.olg.bakhur.domain.repositories
 
-import com.olg.bakhur.data.RetrofitService
+import com.olg.bakhur.application.RetrofitService
 
 class MovieRepository {
 

@@ -1,4 +1,4 @@
-package com.olg.bakhur.presenter
+package com.olg.bakhur.presenter.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
-import com.olg.bakhur.data.NowPlayingMovies
-import com.olg.bakhur.data.PopularMovies
+import com.olg.bakhur.data.server_pojo.NowPlayingMovies
+import com.olg.bakhur.domain.viewmodels.MovieViewModel
+import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
+import com.olg.bakhur.presenter.adapters.NowPlayingMovieListAdapter
 import kotlinx.android.synthetic.main.fragment_now_playing_movie_list.*
 
 class NowPlayingMovieListFragment : Fragment() {

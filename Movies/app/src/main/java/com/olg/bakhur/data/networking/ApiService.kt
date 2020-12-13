@@ -1,5 +1,9 @@
-package com.olg.bakhur.data
+package com.olg.bakhur.data.networking
 
+import com.olg.bakhur.data.server_pojo.MovieDetails
+import com.olg.bakhur.data.server_pojo.NowPlayingMovieList
+import com.olg.bakhur.data.server_pojo.PopularMovieList
+import com.olg.bakhur.data.server_pojo.UpcomingMovieList
 import retrofit2.http.GET
 import retrofit2.http.Path
 

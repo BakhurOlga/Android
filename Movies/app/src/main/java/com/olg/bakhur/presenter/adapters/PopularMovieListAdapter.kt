@@ -1,4 +1,4 @@
-package com.olg.bakhur.presenter
+package com.olg.bakhur.presenter.adapters
 
 
 import android.view.LayoutInflater
@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.olg.bakhur.AppConstants
+import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
-import com.olg.bakhur.data.PopularMovies
+import com.olg.bakhur.data.server_pojo.PopularMovies
+import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_popular_movie.view.*
 
 
@@ -35,7 +36,7 @@ class PopularMovieListAdapter(
             clear()
             addAll(newMoviesList)
         }
-        notifyDataSetChanged() // он должен вызываться на адаптере
+        notifyDataSetChanged() 
     }
 
     class PopularMovieListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
