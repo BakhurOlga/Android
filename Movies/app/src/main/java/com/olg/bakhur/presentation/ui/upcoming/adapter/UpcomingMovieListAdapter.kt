@@ -1,4 +1,4 @@
-package com.olg.bakhur.presenter.adapters
+package com.olg.bakhur.presentation.ui.upcoming.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.model.UpcomingMovie
-import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
+import com.olg.bakhur.presentation.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
 class UpcomingMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :

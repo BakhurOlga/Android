@@ -1,4 +1,4 @@
-package com.olg.bakhur.presenter.interfaces
+package com.olg.bakhur.presentation
 
 interface OnItemMovieClickListener {
     fun displayMovieDetails(id: Int)

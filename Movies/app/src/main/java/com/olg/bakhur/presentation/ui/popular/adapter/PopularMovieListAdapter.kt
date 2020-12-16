@@ -1,4 +1,4 @@
-package com.olg.bakhur.presenter.adapters
+package com.olg.bakhur.presentation.ui.popular.adapter
 
 
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.model.PopularMovies
-import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
+import com.olg.bakhur.presentation.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_popular_movie.view.*
 
 

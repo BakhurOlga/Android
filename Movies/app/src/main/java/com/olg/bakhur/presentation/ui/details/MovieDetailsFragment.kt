@@ -1,24 +1,21 @@
-package com.olg.bakhur.presenter.views
+package com.olg.bakhur.presentation.ui.details
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
-import com.olg.bakhur.presenter.viewmodels.MovieViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 class MovieDetailsFragment : Fragment() {
 
-    private lateinit var movieViewModel: MovieViewModel
+    private lateinit var movieViewModel: MovieDetailsViewModel
     private var movieId: Int? = null
 
     override fun onCreateView(
@@ -33,7 +30,7 @@ class MovieDetailsFragment : Fragment() {
 
         movieId = arguments?.getInt(KEY_BUNDLE_MOVIE_ID)
 
-        movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+        movieViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
         movieId?.let {
             movieViewModel.getMovieDetails(it).observe(MovieDetailsFragment@ this, Observer { movie ->
 

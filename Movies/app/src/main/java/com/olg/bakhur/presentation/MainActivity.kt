@@ -1,4 +1,4 @@
-package com.olg.bakhur.presenter.views
+package com.olg.bakhur.presentation
 
 import android.os.Bundle
 import android.view.Menu

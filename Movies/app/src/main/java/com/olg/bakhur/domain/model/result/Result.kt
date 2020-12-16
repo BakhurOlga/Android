@@ -1,5 +1,6 @@
 package com.olg.bakhur.domain.model.result
 
+import android.util.Log
 import com.olg.bakhur.domain.error.ApplicationError
 
 sealed class Result<out T> {
@@ -23,3 +24,4 @@ inline fun <T> Result<T>.onError(action: (exception: ApplicationError) -> Unit):
     if (this is Result.Error) action(error)
     return this
 }
+
