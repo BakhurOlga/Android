@@ -3,11 +3,13 @@ package com.olg.bakhur.presenter.views
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
@@ -28,9 +30,8 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TAG", "onViewCreated")
+
         movieId = arguments?.getInt(KEY_BUNDLE_MOVIE_ID)
-        Log.d("TAG", movieId.toString())
 
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         movieId?.let {
@@ -55,6 +56,14 @@ class MovieDetailsFragment : Fragment() {
             })
         }
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val itemId = item.itemId
+//        if (itemId == R.id.home){
+//            findNavController().popBackStack()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     companion object{
         const val KEY_BUNDLE_MOVIE_ID = "KEY_BUNDLE_MOVIE_ID"

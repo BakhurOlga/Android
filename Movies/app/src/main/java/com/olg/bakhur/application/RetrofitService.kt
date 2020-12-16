@@ -1,7 +1,7 @@
 package com.olg.bakhur.application
 
 import com.google.gson.GsonBuilder
-import com.olg.bakhur.data.networking.ApiService
+import com.olg.bakhur.data.source.remote.MovieApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -33,5 +33,5 @@ object RetrofitService {
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 
-    val apiService: ApiService = retrofit().create(ApiService::class.java)
+    val apiService: MovieApi = retrofit().create(MovieApi::class.java)
 }

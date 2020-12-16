@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
-import com.olg.bakhur.data.server_pojo.PopularMovies
+import com.olg.bakhur.data.model.PopularMovies
 import com.olg.bakhur.presenter.viewmodels.MovieViewModel
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import com.olg.bakhur.presenter.adapters.PopularMovieListAdapter
@@ -59,4 +59,12 @@ class PopularMovieListFragment : Fragment() { // по нажатии на кно
             layoutManager = LinearLayoutManager(PopularMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val itemId = item.itemId
+//        if (itemId == R.id.home){
+//            findNavController().popBackStack()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }

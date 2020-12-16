@@ -3,15 +3,15 @@ package com.olg.bakhur.presenter.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.olg.bakhur.data.server_pojo.MovieDetails
-import com.olg.bakhur.data.repositories.MovieRepository
+import com.olg.bakhur.data.model.pojo.movie.MovieDetailsResponse
+import com.olg.bakhur.data.repository.MovieRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 
 class MovieViewModel : ViewModel() {
 
-    val repository: MovieRepository = MovieRepository() // inject. Field injection should only be used in Android framework classes where constructor injection cannot be used.
+    val repository: MovieRepositoryImpl = MovieRepositoryImpl() // inject. Field injection should only be used in Android framework classes where constructor injection cannot be used.
 
-    fun getMovieDetails(id: Int): LiveData<MovieDetails> {
+    fun getMovieDetails(id: Int): LiveData<MovieDetailsResponse> {
         val movie = liveData(Dispatchers.IO) {
             val retrivedMovie = repository.getMovieDetails(id)
 

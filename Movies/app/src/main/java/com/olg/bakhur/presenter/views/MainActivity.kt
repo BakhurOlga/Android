@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Movies)
         setContentView(R.layout.activity_movie)
 
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

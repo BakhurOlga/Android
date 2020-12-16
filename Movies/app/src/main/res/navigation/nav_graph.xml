@@ -11,40 +11,34 @@
         android:name="com.olg.bakhur.presenter.views.PopularMovieListFragment"
         android:label="PopularMovieListFragment">
         <action
-            android:id="@+id/action_popularMovieListFragment_to_nowPlayingMovieListFragment"
-            app:destination="@id/nowPlayingMovieListFragment" />
-        <action
-            android:id="@+id/action_popularMovieListFragment_to_upcomingMovieListFragment"
-            app:destination="@id/upcomingMovieListFragment" />
-        <action
             android:id="@+id/action_popularMovieListFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/nowPlayingMovieListFragment"
         android:name="com.olg.bakhur.presenter.views.NowPlayingMovieListFragment"
         android:label="NowPlayingMovieListFragment" >
         <action
-            android:id="@+id/action_nowPlayingMovieListFragment_to_popularMovieListFragment"
-            app:destination="@id/popularMovieListFragment" />
-        <action
             android:id="@+id/action_nowPlayingMovieListFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/upcomingMovieListFragment"
         android:name="com.olg.bakhur.presenter.views.UpcomingMovieListFragment"
         android:label="UpcomingMovieListFragment" >
         <action
-            android:id="@+id/action_upcomingMovieListFragment_to_popularMovieListFragment"
-            app:destination="@id/popularMovieListFragment" />
-        <action
             android:id="@+id/action_upcomingMovieListFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.olg.bakhur.presenter.views.MovieDetailsFragment"
         android:label="MovieDetailsFragment" >
+        <argument
+            android:name="movieId"
+            app:argType="integer"/>
     </fragment>
 </navigation>

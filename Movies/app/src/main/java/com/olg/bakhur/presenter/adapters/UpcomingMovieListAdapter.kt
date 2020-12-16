@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
-import com.olg.bakhur.data.server_pojo.UpcomingMovie
+import com.olg.bakhur.data.model.UpcomingMovie
 import com.olg.bakhur.presenter.interfaces.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
