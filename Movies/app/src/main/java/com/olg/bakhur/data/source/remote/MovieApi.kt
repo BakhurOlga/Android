@@ -6,30 +6,19 @@ import com.olg.bakhur.data.model.pojo.movie.PopularMovieListResponse
 import com.olg.bakhur.data.model.pojo.movie.UpcomingMovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MovieApi {
 
-//    @GET("movie/{id}")
-//    suspend fun getMovieDetails(@Path(value = "id") id: Int): MovieDetailsResponse
-//
-//    @GET("movie/top_rated")
-//    suspend fun getPopularMoviesList(): PopularMovieListResponse
-//
-//    @GET("movie/now_playing")
-//    suspend fun getNowPlayingMoviesList(): NowPlayingMovieListResponse
-//
-//    @GET("movie/upcoming")
-//    suspend fun getUpcomingMoviesList(): UpcomingMovieListResponse
+    @GET("movie/{id}")
+    suspend fun getMovieDetails(@Path(value = "id") id: Int, @Query("api_key") api_key: String): MovieDetailsResponse
 
-    @GET("movie/{id}/{api_key}")
-    suspend fun getMovieDetails(@Path(value = "id") id: Int, @Path(value = "api_key") api_key: String): MovieDetailsResponse
+    @GET("movie/top_rated")
+    suspend fun getPopularMoviesList(@Query("api_key") apiKey: String): PopularMovieListResponse
 
-    @GET("movie/top_rated/{api_key}")
-    suspend fun getPopularMoviesList(@Path(value = "api_key") api_key: String): PopularMovieListResponse
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMoviesList(@Query("api_key") apiKey: String): NowPlayingMovieListResponse
 
-    @GET("movie/now_playing/{api_key}")
-    suspend fun getNowPlayingMoviesList(@Path(value = "api_key") api_key: String): NowPlayingMovieListResponse
-
-    @GET("movie/upcoming/{api_key}")
-    suspend fun getUpcomingMoviesList(@Path(value = "api_key") api_key: String): UpcomingMovieListResponse
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMoviesList(@Query("api_key") apiKey: String): UpcomingMovieListResponse
 }

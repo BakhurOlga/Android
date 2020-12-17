@@ -20,9 +20,9 @@ class PopularMovieViewModel @Inject constructor(
     var popularMovieListMutableLD = MutableLiveData<List<PopularMovie>>()
     val popularMovieListListLD: LiveData<List<PopularMovie>> = popularMovieListMutableLD
 
-    fun getPopularMovieList(): LiveData<List<PopularMovie>> {
+    fun getPopularMovieList(apiKey: String): LiveData<List<PopularMovie>> {
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.getPopularMoviesList()
+            interactor.getPopularMoviesList(apiKey)
                 .onSuccess { popularMovieListMutableLD.postValue(it) }
                 .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
         }

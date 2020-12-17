@@ -20,19 +20,19 @@ class MovieRepositoryImpl @Inject constructor(
     private val api: MovieApi
 ) : MovieRepository {
 
-    override suspend fun getMovieDetails(id: Int): Result<MovieDetails> {
-        return safeApiCall { api.getMovieDetails(id).mapToMovieDetails() }
+    override suspend fun getMovieDetails(id: Int, apiKey: String): Result<MovieDetails> {
+        return safeApiCall { api.getMovieDetails(id, apiKey).mapToMovieDetails() }
     }
 
-    override suspend fun getNowPlayingMoviesList(): Result<List<NowPlayingMovie>> {
-        return safeApiCall { api.getNowPlayingMoviesList().mapToNowPlayingMovieList() }
+    override suspend fun getNowPlayingMoviesList(apiKey: String): Result<List<NowPlayingMovie>> {
+        return safeApiCall { api.getNowPlayingMoviesList(apiKey).mapToNowPlayingMovieList() }
     }
 
-    override suspend fun getPopularMoviesList(): Result<List<PopularMovie>> {
-        return safeApiCall { api.getPopularMoviesList().mapToPopularMovieList() }
+    override suspend fun getPopularMoviesList(apiKey: String): Result<List<PopularMovie>> {
+        return safeApiCall { api.getPopularMoviesList(apiKey).mapToPopularMovieList() }
     }
 
-    override suspend fun getUpcomingMoviesList(): Result<List<UpcomingMovie>> {
-        return safeApiCall { api.getUpcomingMoviesList().mapToUpcomingMovieList() }
+    override suspend fun getUpcomingMoviesList(apiKey: String): Result<List<UpcomingMovie>> {
+        return safeApiCall { api.getUpcomingMoviesList(apiKey).mapToUpcomingMovieList() }
     }
 }

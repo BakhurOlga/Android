@@ -1,9 +1,7 @@
 package com.olg.bakhur.application
 
-import com.olg.bakhur.BuildConfig
-
 object AppConstants {
-    var tmdbApiKey = BuildConfig.TMDB_API_KEY
+    var apiKey = "9f8394c0ed06eb97ebdd6783aff2456c"
     var apiBaseUrl = "https://api.themoviedb.org/3/"
     var posterBaseUrl = "https://image.tmdb.org/t/p/w500/"
 }

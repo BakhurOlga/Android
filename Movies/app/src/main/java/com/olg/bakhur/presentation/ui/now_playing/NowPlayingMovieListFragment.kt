@@ -1,5 +1,6 @@
 package com.olg.bakhur.presentation.ui.now_playing
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.application.App
+import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
@@ -19,11 +21,19 @@ import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.now_playing.adapter.NowPlayingMovieListAdapter
 import kotlinx.android.synthetic.main.fragment_now_playing_movie_list.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
+import javax.inject.Inject
 
 class NowPlayingMovieListFragment : Fragment() {
 
-    var viewModel by viewModel { App.component.nowPlayingMovieViewModel }
+    @Inject
+    lateinit var nowPlayingMovieViewModel: NowPlayingMovieViewModel
     private var movieList: MutableList<NowPlayingMovie> = ArrayList()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (this.activity?.application as App).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +50,7 @@ class NowPlayingMovieListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        viewModel.getNowPlayingMovieList()
+        nowPlayingMovieViewModel.getNowPlayingMovieList(AppConstants.apiKey)
             .observe(NowPlayingMovieListFragment@ this, Observer { nowPlayingMovieList: List<NowPlayingMovie> ->
                 movieList = nowPlayingMovieList as MutableList<NowPlayingMovie>
                 val adapter = recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter

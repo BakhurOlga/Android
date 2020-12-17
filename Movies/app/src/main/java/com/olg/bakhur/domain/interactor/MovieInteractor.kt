@@ -11,19 +11,19 @@ import javax.inject.Inject
 class MovieInteractor @Inject constructor(
     private val movieUseCase: MovieUseCase
 ) {
-    suspend fun getMovieDetails(id: Int): Result<MovieDetails> {
-        return movieUseCase.getMovieDetails(id)
+    suspend fun getMovieDetails(id: Int, apiKey: String): Result<MovieDetails> {
+        return movieUseCase.getMovieDetails(id, apiKey)
     }
 
-    suspend fun getNowPlayingMoviesList(): Result<List<NowPlayingMovie>> {
-        return movieUseCase.getNowPlayingMoviesList()
+    suspend fun getNowPlayingMoviesList(apiKey: String): Result<List<NowPlayingMovie>> {
+        return movieUseCase.getNowPlayingMoviesList(apiKey)
     }
 
-    suspend fun getPopularMoviesList(): Result<List<PopularMovie>> {
-        return movieUseCase.getPopularMoviesList()
+    suspend fun getPopularMoviesList(apiKey: String): Result<List<PopularMovie>> {
+        return movieUseCase.getPopularMoviesList(apiKey)
     }
 
-    suspend fun getUpcomingMoviesList(): Result<List<UpcomingMovie>> {
-        return movieUseCase.getUpcomingMoviesList()
+    suspend fun getUpcomingMoviesList(apiKey: String): Result<List<UpcomingMovie>> {
+        return movieUseCase.getUpcomingMoviesList(apiKey)
     }
 }

@@ -1,6 +1,8 @@
 package com.olg.bakhur.presentation.ui.popular
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.application.App
+import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.domain.model.dto.PopularMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
@@ -20,13 +23,19 @@ import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
 import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
 import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
+import javax.inject.Inject
 
-class PopularMovieListFragment : Fragment() { // по нажатии на кнопку back не переходит на предыдущий экран. Остается пустой экран активити
+class PopularMovieListFragment : Fragment() {
 
-    var viewModel by viewModel { App.component.popularMovieViewModel }
-//    @Inject
-//    lateinit var viewModel: PopularMovieViewModel // почему не так??
+    @Inject
+    lateinit var popularMovieViewModel: PopularMovieViewModel
     private var movieList: MutableList<PopularMovie> = ArrayList()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (this.activity?.application as App).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,8 +52,8 @@ class PopularMovieListFragment : Fragment() { // по нажатии на кно
 
     override fun onResume() {
         super.onResume()
-        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        viewModel.getPopularMovieList().observe(PopularMovieListFragment@ this, Observer { popularMovieList: List<PopularMovie> ->
+        popularMovieViewModel.getPopularMovieList(AppConstants.apiKey).observe(PopularMovieListFragment@ this, Observer { popularMovieList: List<PopularMovie> ->
+            Log.d("TAG", popularMovieList.toString())
             movieList = popularMovieList as MutableList<PopularMovie>
             val adapter = recyclerPopularMovieList.adapter as PopularMovieListAdapter
             adapter.setData(movieList)

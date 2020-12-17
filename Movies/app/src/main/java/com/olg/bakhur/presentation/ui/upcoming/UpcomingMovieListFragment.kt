@@ -1,5 +1,6 @@
 package com.olg.bakhur.presentation.ui.upcoming
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,19 +13,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.application.App
+import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.domain.model.dto.UpcomingMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.upcoming.adapter.UpcomingMovieListAdapter
 import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
+import com.olg.bakhur.presentation.ui.now_playing.NowPlayingMovieViewModel
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 import kotlinx.android.synthetic.main.fragment_upcoming_movie_list.*
+import javax.inject.Inject
 
 class UpcomingMovieListFragment : Fragment() {
 
-    var viewModel by viewModel { App.component.upcomingMovieViewModel }
+    @Inject
+    lateinit var upcomingMovieViewModel: UpcomingMovieViewModel
     private var movieList: MutableList<UpcomingMovie> = ArrayList()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (this.activity?.application as App).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,8 +52,7 @@ class UpcomingMovieListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        viewModel.getUpcomingMoviesList().observe(UpcomingMovieListFragment@this, Observer {  upcomingMovieList: List<UpcomingMovie> ->
+        upcomingMovieViewModel.getUpcomingMoviesList(AppConstants.apiKey).observe(UpcomingMovieListFragment@this, Observer { upcomingMovieList: List<UpcomingMovie> ->
             movieList = upcomingMovieList  as MutableList<UpcomingMovie>
             val adapter = recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
             adapter.setData(movieList)

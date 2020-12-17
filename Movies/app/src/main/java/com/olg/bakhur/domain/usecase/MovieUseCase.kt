@@ -11,19 +11,19 @@ import javax.inject.Inject
 class MovieUseCase @Inject constructor(
     private val repository: MovieRepository
 ){
-    suspend fun getMovieDetails(id: Int): Result<MovieDetails>{
-        return repository.getMovieDetails(id)
+    suspend fun getMovieDetails(id: Int, apiKey: String): Result<MovieDetails>{
+        return repository.getMovieDetails(id, apiKey)
     }
 
-    suspend fun getNowPlayingMoviesList(): Result<List<NowPlayingMovie>>{
-        return repository.getNowPlayingMoviesList()
+    suspend fun getNowPlayingMoviesList(apiKey: String): Result<List<NowPlayingMovie>>{
+        return repository.getNowPlayingMoviesList(apiKey)
     }
 
-    suspend fun getPopularMoviesList(): Result<List<PopularMovie>>{
-        return repository.getPopularMoviesList()
+    suspend fun getPopularMoviesList(apiKey: String): Result<List<PopularMovie>>{
+        return repository.getPopularMoviesList(apiKey)
     }
 
-    suspend fun getUpcomingMoviesList(): Result<List<UpcomingMovie>>{
-        return repository.getUpcomingMoviesList()
+    suspend fun getUpcomingMoviesList(apiKey: String): Result<List<UpcomingMovie>>{
+        return repository.getUpcomingMoviesList(apiKey)
     }
 }

@@ -25,10 +25,10 @@ interface AppComponent {
     }
 
     // ViewModels
-    val movieDetailsViewModel: MovieDetailsViewModel
-    val nowPlayingMovieViewModel: NowPlayingMovieViewModel
-    val popularMovieViewModel: PopularMovieViewModel
-    val upcomingMovieViewModel: UpcomingMovieViewModel
+    fun movieDetailsViewModel(): MovieDetailsViewModel
+    fun nowPlayingMovieViewModel(): NowPlayingMovieViewModel
+    fun popularMovieViewModel(): PopularMovieViewModel
+    fun upcomingMovieViewModel(): UpcomingMovieViewModel
 
     // Fragments
     fun inject(fragment: MovieDetailsFragment)

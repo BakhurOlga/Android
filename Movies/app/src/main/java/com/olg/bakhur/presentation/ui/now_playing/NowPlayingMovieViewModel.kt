@@ -23,9 +23,9 @@ class NowPlayingMovieViewModel @Inject constructor(
     var nowPlayingMovieListMutableLD = MutableLiveData<List<NowPlayingMovie>>()
     val nowPlayingMovieListLD: LiveData<List<NowPlayingMovie>> = nowPlayingMovieListMutableLD
 
-    fun getNowPlayingMovieList(): LiveData<List<NowPlayingMovie>>{
+    fun getNowPlayingMovieList(apiKey: String): LiveData<List<NowPlayingMovie>>{
         viewModelScope.launch(Dispatchers.IO){
-            interactor.getNowPlayingMoviesList()
+            interactor.getNowPlayingMoviesList(apiKey)
                 .onSuccess { nowPlayingMovieListMutableLD.postValue(it) }
                 .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
         }

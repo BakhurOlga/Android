@@ -8,8 +8,8 @@ import com.olg.bakhur.domain.model.result.Result
 
 interface MovieRepository {
 
-    suspend fun getMovieDetails(id: Int): Result<MovieDetails>
-    suspend fun getNowPlayingMoviesList(): Result<List<NowPlayingMovie>>
-    suspend fun getPopularMoviesList(): Result<List<PopularMovie>>
-    suspend fun getUpcomingMoviesList(): Result<List<UpcomingMovie>>
+    suspend fun getMovieDetails(id: Int, apiKey: String): Result<MovieDetails>
+    suspend fun getNowPlayingMoviesList(apiKey: String): Result<List<NowPlayingMovie>>
+    suspend fun getPopularMoviesList(apiKey: String): Result<List<PopularMovie>>
+    suspend fun getUpcomingMoviesList(apiKey: String): Result<List<UpcomingMovie>>
 }

@@ -20,9 +20,9 @@ class UpcomingMovieViewModel @Inject constructor(
     var upcomingMoviesListMutableLD = MutableLiveData<List<UpcomingMovie>>()
     val upcomingMoviesListListLD: LiveData<List<UpcomingMovie>> = upcomingMoviesListMutableLD
 
-    fun getUpcomingMoviesList(): LiveData<List<UpcomingMovie>> {
+    fun getUpcomingMoviesList(apiKey: String): LiveData<List<UpcomingMovie>> {
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.getUpcomingMoviesList()
+            interactor.getUpcomingMoviesList(apiKey)
                 .onSuccess { upcomingMoviesListMutableLD.postValue(it) }
                 .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
         }

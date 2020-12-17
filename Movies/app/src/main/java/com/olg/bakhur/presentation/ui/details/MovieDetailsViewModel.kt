@@ -20,9 +20,9 @@ class MovieDetailsViewModel @Inject constructor(
     var movieDetailsMutableLD = MutableLiveData<MovieDetails>()
     val movieDetailsLD: LiveData<MovieDetails> = movieDetailsMutableLD
 
-    fun getMovieDetails(id: Int): LiveData<MovieDetails> {
+    fun getMovieDetails(id: Int, apiKey: String): LiveData<MovieDetails> {
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.getMovieDetails(id)
+            interactor.getMovieDetails(id, apiKey)
                 .onSuccess { movieDetailsMutableLD.postValue(it) }
                 .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
         }
