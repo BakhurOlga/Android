@@ -11,9 +11,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
-import com.olg.bakhur.data.model.PopularMovies
+import com.olg.bakhur.application.App
+import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.domain.model.dto.PopularMovie
-import com.olg.bakhur.presentation.OnItemMovieClickListener
+import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
 import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
@@ -22,7 +23,9 @@ import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 
 class PopularMovieListFragment : Fragment() { // по нажатии на кнопку back не переходит на предыдущий экран. Остается пустой экран активити
 
-    override val viewModel by viewModel { App.component.popularMovieViewModel }
+    var viewModel by viewModel { App.component.popularMovieViewModel }
+//    @Inject
+//    lateinit var viewModel: PopularMovieViewModel // почему не так??
     private var movieList: MutableList<PopularMovie> = ArrayList()
 
     override fun onCreateView(
@@ -41,8 +44,8 @@ class PopularMovieListFragment : Fragment() { // по нажатии на кно
     override fun onResume() {
         super.onResume()
         viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        viewModel.getPopularMovieList().observe(PopularMovieListFragment@ this, Observer { popularMovieList ->
-            movieList = popularMovieList.popularMovieList
+        viewModel.getPopularMovieList().observe(PopularMovieListFragment@ this, Observer { popularMovieList: List<PopularMovie> ->
+            movieList = popularMovieList as MutableList<PopularMovie>
             val adapter = recyclerPopularMovieList.adapter as PopularMovieListAdapter
             adapter.setData(movieList)
         })

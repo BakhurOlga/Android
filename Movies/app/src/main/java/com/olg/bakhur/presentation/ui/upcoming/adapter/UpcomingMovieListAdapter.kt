@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.olg.bakhur.R
-import com.olg.bakhur.data.model.UpcomingMovie
-import com.olg.bakhur.presentation.OnItemMovieClickListener
+import com.olg.bakhur.application.AppConstants
+import com.olg.bakhur.domain.model.dto.UpcomingMovie
+import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
 class UpcomingMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :
@@ -50,7 +52,6 @@ class UpcomingMovieListAdapter(private val onItemMovieClickListener: OnItemMovie
                 Glide.with(itemView.context)
                     .load(posterAddress)
                     .into(itemView.imageViewPosterItem)
-
             }
         }
     }

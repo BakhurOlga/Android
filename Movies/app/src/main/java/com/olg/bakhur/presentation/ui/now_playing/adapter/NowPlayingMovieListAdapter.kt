@@ -4,16 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.olg.bakhur.R
-import com.olg.bakhur.data.model.NowPlayingMovies
-import com.olg.bakhur.presentation.OnItemMovieClickListener
+import com.olg.bakhur.application.AppConstants
+import com.olg.bakhur.domain.model.dto.NowPlayingMovie
+import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
 class NowPlayingMovieListAdapter(
     private val onItemMovieClickListener: OnItemMovieClickListener
-    ) : RecyclerView.Adapter<NowPlayingMovieListAdapter.NowPlayingMovieListViewHolder>() {
+) : RecyclerView.Adapter<NowPlayingMovieListAdapter.NowPlayingMovieListViewHolder>() {
 
-    var nowPlayingMoviesList: MutableList<NowPlayingMovies> = ArrayList()
+    var nowPlayingMoviesList: MutableList<NowPlayingMovie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingMovieListViewHolder =
         NowPlayingMovieListViewHolder(itemView = parent.run {
@@ -26,7 +28,7 @@ class NowPlayingMovieListAdapter(
 
     override fun getItemCount(): Int = nowPlayingMoviesList.size
 
-    fun setData(newNowPlayingMovies: MutableList<NowPlayingMovies>) {
+    fun setData(newNowPlayingMovies: MutableList<NowPlayingMovie>) {
         nowPlayingMoviesList.apply {
             clear()
             addAll(newNowPlayingMovies)
@@ -36,7 +38,7 @@ class NowPlayingMovieListAdapter(
 
     class NowPlayingMovieListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(nowPlayingMovie: NowPlayingMovies, onItemMovieClickListener: OnItemMovieClickListener) {
+        fun bind(nowPlayingMovie: NowPlayingMovie, onItemMovieClickListener: OnItemMovieClickListener) {
             with(nowPlayingMovie) {
 
                 itemView.apply {
@@ -51,7 +53,6 @@ class NowPlayingMovieListAdapter(
                 Glide.with(itemView.context)
                     .load(posterAddress)
                     .into(itemView.imageViewPosterItem)
-
             }
         }
     }

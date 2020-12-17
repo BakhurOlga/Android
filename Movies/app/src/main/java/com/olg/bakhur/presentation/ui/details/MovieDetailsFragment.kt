@@ -11,11 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
+import com.olg.bakhur.application.App
+import com.olg.bakhur.domain.model.dto.MovieDetails
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import javax.inject.Inject
 
 class MovieDetailsFragment : Fragment() {
 
-    override val viewModel by viewModel { App.component.movieDetailsViewModel }
+    var viewModel by viewModel { App.component.movieDetailsViewModel }
 
     private var movieId: Int? = null
 
@@ -33,10 +36,9 @@ class MovieDetailsFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
         movieId?.let {
-            viewModel.getMovieDetails(it).observe(MovieDetailsFragment@ this, Observer { movie ->
+            viewModel.getMovieDetails(it).observe(MovieDetailsFragment@ this, Observer { movieDetails: MovieDetails ->
 
-                Log.d("TAG", movie.toString())
-                with(movie) {
+                with(movieDetails) {
                     textViewMovieTitle.text = title
                     textViewAverageVote.text = voteAverage.toString()
                     textViewOverview.text = overview
