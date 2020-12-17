@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.olg.bakhur.data.model.pojo.movie.MovieDetailsResponse
-import com.olg.bakhur.data.repository.MovieRepositoryImpl
 import com.olg.bakhur.domain.interactor.MovieInteractor
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.domain.model.result.onError
@@ -23,8 +20,8 @@ class NowPlayingMovieViewModel @Inject constructor(
     var nowPlayingMovieListMutableLD = MutableLiveData<List<NowPlayingMovie>>()
     val nowPlayingMovieListLD: LiveData<List<NowPlayingMovie>> = nowPlayingMovieListMutableLD
 
-    fun getNowPlayingMovieList(apiKey: String): LiveData<List<NowPlayingMovie>>{
-        viewModelScope.launch(Dispatchers.IO){
+    fun getNowPlayingMovieList(apiKey: String): LiveData<List<NowPlayingMovie>> {
+        viewModelScope.launch(Dispatchers.IO) {
             interactor.getNowPlayingMoviesList(apiKey)
                 .onSuccess { nowPlayingMovieListMutableLD.postValue(it) }
                 .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }

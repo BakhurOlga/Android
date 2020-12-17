@@ -26,13 +26,13 @@ import javax.inject.Inject
 class NowPlayingMovieListFragment : Fragment() {
 
     @Inject
-    lateinit var nowPlayingMovieViewModel: NowPlayingMovieViewModel
+    internal lateinit var nowPlayingMovieViewModel: NowPlayingMovieViewModel
     private var movieList: MutableList<NowPlayingMovie> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (this.activity?.application as App).appComponent.inject(this)
+        (requireActivity().application as App).appComponent.inject(this)
     }
 
     override fun onCreateView(

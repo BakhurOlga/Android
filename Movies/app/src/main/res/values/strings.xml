@@ -1,9 +1,15 @@
 <resources>
+
+    <!--    Common-->
     <string name="app_name">Movies</string>
     <string name="average_vote">Average vote:</string>
+
+    <!--    Menu-->
     <string name="topRated">Top rated</string>
     <string name="playingNow">Playing now</string>
     <string name="upcoming">Upcoming</string>
+
+    <!--    Details-->
     <string name="budget">Budget</string>
     <string name="original_language">Original language</string>
     <string name="popularity">Popularity</string>

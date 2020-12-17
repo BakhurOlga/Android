@@ -8,33 +8,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.application.App
 import com.olg.bakhur.application.AppConstants
-import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.domain.model.dto.PopularMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
-import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
-import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
 import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
-import kotlinx.android.synthetic.main.activity_movie.*
+import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 import javax.inject.Inject
 
 class PopularMovieListFragment : Fragment() {
 
     @Inject
-    lateinit var popularMovieViewModel: PopularMovieViewModel
+    internal lateinit var popularMovieViewModel: PopularMovieViewModel
     private var movieList: MutableList<PopularMovie> = ArrayList()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (this.activity?.application as App).appComponent.inject(this)
+        (requireActivity().application as App).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -52,12 +49,13 @@ class PopularMovieListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        popularMovieViewModel.getPopularMovieList(AppConstants.apiKey).observe(PopularMovieListFragment@ this, Observer { popularMovieList: List<PopularMovie> ->
-            Log.d("TAG", popularMovieList.toString())
-            movieList = popularMovieList as MutableList<PopularMovie>
-            val adapter = recyclerPopularMovieList.adapter as PopularMovieListAdapter
-            adapter.setData(movieList)
-        })
+        popularMovieViewModel.getPopularMovieList(AppConstants.apiKey)
+            .observe(PopularMovieListFragment@ this, Observer { popularMovieList: List<PopularMovie> ->
+                Log.d("TAG", popularMovieList.toString())
+                movieList = popularMovieList as MutableList<PopularMovie>
+                val adapter = recyclerPopularMovieList.adapter as PopularMovieListAdapter
+                adapter.setData(movieList)
+            })
     }
 
     private fun setUpAdapter(list: MutableList<PopularMovie>) {
@@ -66,11 +64,15 @@ class PopularMovieListFragment : Fragment() {
                 override fun displayMovieDetails(id: Int) {
                     val bundle = Bundle()
                     bundle.putInt(MovieDetailsFragment.KEY_BUNDLE_MOVIE_ID, id)
-                    findNavController().navigate(R.id.action_popularMovieListFragment_to_movieDetailsFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_popularMovieListFragment_to_movieDetailsFragment,
+                        bundle
+                    )
                 }
             })
             (adapter as PopularMovieListAdapter).popularMoviesList = list
-            layoutManager = LinearLayoutManager(PopularMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(PopularMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
     }
 

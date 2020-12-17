@@ -7,26 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.R
 import com.olg.bakhur.application.App
+import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.domain.model.dto.MovieDetails
-import com.olg.bakhur.presentation.ui.popular.PopularMovieViewModel
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
 class MovieDetailsFragment : Fragment() {
 
     @Inject
-    lateinit var movieDetailsViewModel: MovieDetailsViewModel
+    internal lateinit var movieDetailsViewModel: MovieDetailsViewModel
     private var movieId: Int? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (this.activity?.application as App).appComponent.inject(this)
+        (requireActivity().application as App).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -41,28 +39,29 @@ class MovieDetailsFragment : Fragment() {
 
         movieId = arguments?.getInt(KEY_BUNDLE_MOVIE_ID)
         movieId?.let {
-            movieDetailsViewModel.getMovieDetails(it, AppConstants.apiKey).observe(MovieDetailsFragment@ this, Observer { movieDetails: MovieDetails ->
+            movieDetailsViewModel.getMovieDetails(it, AppConstants.apiKey)
+                .observe(MovieDetailsFragment@ this, Observer { movieDetails: MovieDetails ->
 
-                with(movieDetails) {
-                    textViewMovieTitle.text = title
-                    textViewAverageVote.text = voteAverage.toString()
-                    textViewOverview.text = overview
-                    textViewMovieBudget.text = budget.toString()
-                    textViewMovieOriginalLang.text = originalLanguage
-                    textViewMoviePopularity.text = popularity.toString()
-                    textViewMovieReleaseDate.text = releaseDate
+                    with(movieDetails) {
+                        textViewMovieTitle.text = title
+                        textViewAverageVote.text = voteAverage.toString()
+                        textViewOverview.text = overview
+                        textViewMovieBudget.text = budget.toString()
+                        textViewMovieOriginalLang.text = originalLanguage
+                        textViewMoviePopularity.text = popularity.toString()
+                        textViewMovieReleaseDate.text = releaseDate
 
-                    val posterAddress: String = AppConstants.posterBaseUrl + posterPath
+                        val posterAddress: String = AppConstants.posterBaseUrl + posterPath
 
-                    Glide.with(this@MovieDetailsFragment)
-                        .load(posterAddress)
-                        .into(imageViewPoster)
-                }
-            })
+                        Glide.with(this@MovieDetailsFragment)
+                            .load(posterAddress)
+                            .into(imageViewPoster)
+                    }
+                })
         }
     }
 
-    companion object{
+    companion object {
         const val KEY_BUNDLE_MOVIE_ID = "KEY_BUNDLE_MOVIE_ID"
     }
 }
