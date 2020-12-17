@@ -1,21 +1,31 @@
 package com.olg.bakhur.presentation.ui.popular
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.olg.bakhur.data.model.pojo.movie.MovieDetailsResponse
-import com.olg.bakhur.data.repository.MovieRepositoryImpl
+import androidx.lifecycle.viewModelScope
 import com.olg.bakhur.domain.interactor.MovieInteractor
+import com.olg.bakhur.domain.model.dto.PopularMovie
+import com.olg.bakhur.domain.model.result.onError
+import com.olg.bakhur.domain.model.result.onSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PopularMovieViewModel @Inject constructor(
     private val interactor: MovieInteractor
-): ViewModel() {
+) : ViewModel() {
 
-    val popularMovieList = liveData(Dispatchers.IO) {
-        val retrivedPopularMoviesList = interactor.getPopularMoviesList()
+    var popularMovieListMutableLD = MutableLiveData<List<PopularMovie>>()
+    val popularMovieListListLD: LiveData<List<PopularMovie>> = popularMovieListMutableLD
 
-        emit(retrivedPopularMoviesList)
+    fun getPopularMovieList(): LiveData<List<PopularMovie>> {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.getPopularMoviesList()
+                .onSuccess { popularMovieListMutableLD.postValue(it) }
+                .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
+        }
+        return popularMovieListListLD
     }
 }

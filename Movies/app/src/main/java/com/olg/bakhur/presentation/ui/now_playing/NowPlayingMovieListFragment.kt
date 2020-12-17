@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.model.NowPlayingMovies
+import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.presentation.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.now_playing.adapter.NowPlayingMovieListAdapter
@@ -23,8 +24,8 @@ import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 
 class NowPlayingMovieListFragment : Fragment() { // по нажатии на кнопку back не переходит на предыдущий экран. Остается пустой экран активити
 
-    private lateinit var movieViewModel: MovieDetailsViewModel
-    private var movieList: MutableList<NowPlayingMovies> = ArrayList()
+    override val viewModel by viewModel { App.component.nowPlayingMovieViewModel }
+    private var movieList: MutableList<NowPlayingMovie> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,15 +42,15 @@ class NowPlayingMovieListFragment : Fragment() { // по нажатии на к�
 
     override fun onResume() {
         super.onResume()
-        movieViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieViewModel.nowPlayingMovieList.observe(NowPlayingMovieListFragment@this, Observer { nowPlayingMovieList ->
+        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        viewModel.getNowPlayingMovieList().observe(NowPlayingMovieListFragment@this, Observer { nowPlayingMovieList ->
             movieList = nowPlayingMovieList.nowPlayingMovieList
             val adapter = recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
             adapter.setData(movieList)
         })
     }
 
-    private fun setUpAdapter(list: MutableList<NowPlayingMovies>) {
+    private fun setUpAdapter(list: MutableList<NowPlayingMovie>) {
         recyclerNowPlayingMovieList.apply {
             adapter = NowPlayingMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {
@@ -65,13 +66,5 @@ class NowPlayingMovieListFragment : Fragment() { // по нажатии на к�
             layoutManager =
                 LinearLayoutManager(LatestMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemId = item.itemId
-        if (itemId == R.id.home){
-            findNavController().popBackStack()
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

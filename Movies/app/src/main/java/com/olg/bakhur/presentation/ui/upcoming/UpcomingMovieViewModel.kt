@@ -1,21 +1,31 @@
 package com.olg.bakhur.presentation.ui.upcoming
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.olg.bakhur.data.model.pojo.movie.MovieDetailsResponse
-import com.olg.bakhur.data.repository.MovieRepositoryImpl
+import androidx.lifecycle.viewModelScope
 import com.olg.bakhur.domain.interactor.MovieInteractor
+import com.olg.bakhur.domain.model.dto.UpcomingMovie
+import com.olg.bakhur.domain.model.result.onError
+import com.olg.bakhur.domain.model.result.onSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UpcomingMovieViewModel @Inject constructor(
     private val interactor: MovieInteractor
-): ViewModel() {
+) : ViewModel() {
 
-    val upcomingMoviesList = liveData(Dispatchers.IO) {
-        val retrivedUpcomingMoviesList = interactor.getUpcomingMoviesList()
+    var upcomingMoviesListMutableLD = MutableLiveData<List<UpcomingMovie>>()
+    val upcomingMoviesListListLD: LiveData<List<UpcomingMovie>> = upcomingMoviesListMutableLD
 
-        emit(retrivedUpcomingMoviesList)
+    fun getUpcomingMoviesList(): LiveData<List<UpcomingMovie>> {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.getUpcomingMoviesList()
+                .onSuccess { upcomingMoviesListMutableLD.postValue(it) }
+                .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
+        }
+        return upcomingMoviesListListLD
     }
 }

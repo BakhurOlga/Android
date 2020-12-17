@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 class MovieDetailsFragment : Fragment() {
 
-    private lateinit var movieViewModel: MovieDetailsViewModel
+    override val viewModel by viewModel { App.component.movieDetailsViewModel }
+
     private var movieId: Int? = null
 
     override fun onCreateView(
@@ -30,9 +31,9 @@ class MovieDetailsFragment : Fragment() {
 
         movieId = arguments?.getInt(KEY_BUNDLE_MOVIE_ID)
 
-        movieViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
         movieId?.let {
-            movieViewModel.getMovieDetails(it).observe(MovieDetailsFragment@ this, Observer { movie ->
+            viewModel.getMovieDetails(it).observe(MovieDetailsFragment@ this, Observer { movie ->
 
                 Log.d("TAG", movie.toString())
                 with(movie) {
@@ -53,14 +54,6 @@ class MovieDetailsFragment : Fragment() {
             })
         }
     }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val itemId = item.itemId
-//        if (itemId == R.id.home){
-//            findNavController().popBackStack()
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
     companion object{
         const val KEY_BUNDLE_MOVIE_ID = "KEY_BUNDLE_MOVIE_ID"

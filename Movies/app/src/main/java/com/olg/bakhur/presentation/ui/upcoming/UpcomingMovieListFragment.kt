@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.model.UpcomingMovie
+import com.olg.bakhur.domain.model.dto.UpcomingMovie
 import com.olg.bakhur.presentation.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.upcoming.adapter.UpcomingMovieListAdapter
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_upcoming_movie_list.*
 
 class UpcomingMovieListFragment : Fragment() { // по нажатии на кнопку back не переходит на предыдущий экран. Остается пустой экран активити
 
-    private lateinit var movieViewModel: MovieDetailsViewModel
+    override val viewModel by viewModel { App.component.upcomingMovieViewModel }
     private var movieList: MutableList<UpcomingMovie> = ArrayList()
 
     override fun onCreateView(
@@ -39,8 +40,8 @@ class UpcomingMovieListFragment : Fragment() { // по нажатии на кн�
 
     override fun onResume() {
         super.onResume()
-        movieViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieViewModel.upcomingMoviesList.observe(UpcomingMovieListFragment@this, Observer {  upcomingMovieList ->
+        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        viewModel.getUpcomingMoviesList().observe(UpcomingMovieListFragment@this, Observer {  upcomingMovieList ->
             movieList = upcomingMovieList.upcomingMovieList
             val adapter = recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
             adapter.setData(movieList)
@@ -61,12 +62,4 @@ class UpcomingMovieListFragment : Fragment() { // по нажатии на кн�
                 LinearLayoutManager(UpcomingMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
     }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val itemId = item.itemId
-//        if (itemId == R.id.home){
-//            findNavController().popBackStack()
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 }

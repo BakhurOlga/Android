@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
 import com.olg.bakhur.data.model.PopularMovies
+import com.olg.bakhur.domain.model.dto.PopularMovie
 import com.olg.bakhur.presentation.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
@@ -21,8 +22,8 @@ import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 
 class PopularMovieListFragment : Fragment() { // по нажатии на кнопку back не переходит на предыдущий экран. Остается пустой экран активити
 
-    private lateinit var movieViewModel: MovieDetailsViewModel
-    private var movieList: MutableList<PopularMovies> = ArrayList()
+    override val viewModel by viewModel { App.component.popularMovieViewModel }
+    private var movieList: MutableList<PopularMovie> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +40,15 @@ class PopularMovieListFragment : Fragment() { // по нажатии на кно
 
     override fun onResume() {
         super.onResume()
-        movieViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-        movieViewModel.popularMovieList.observe(PopularMovieListFragment@ this, Observer { popularMovieList ->
+        viewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
+        viewModel.getPopularMovieList().observe(PopularMovieListFragment@ this, Observer { popularMovieList ->
             movieList = popularMovieList.popularMovieList
             val adapter = recyclerPopularMovieList.adapter as PopularMovieListAdapter
             adapter.setData(movieList)
         })
     }
 
-    private fun setUpAdapter(list: MutableList<PopularMovies>) {
+    private fun setUpAdapter(list: MutableList<PopularMovie>) {
         recyclerPopularMovieList.apply {
             adapter = PopularMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {
