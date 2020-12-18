@@ -1,4 +1,4 @@
-package com.olg.bakhur.application
+package com.olg.bakhur.common
 
 object AppConstants {
     var apiKey = "9f8394c0ed06eb97ebdd6783aff2456c"

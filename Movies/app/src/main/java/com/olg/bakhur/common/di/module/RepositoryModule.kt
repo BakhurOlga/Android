@@ -1,4 +1,4 @@
-package com.olg.bakhur.application.di.module
+package com.olg.bakhur.common.di.module
 
 import com.olg.bakhur.data.repository.MovieRepositoryImpl
 import com.olg.bakhur.data.source.remote.MovieApi

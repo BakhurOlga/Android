@@ -16,4 +16,10 @@
     <dimen name="padding_bottom">16dp</dimen>
     <dimen name="logo_height_splash_activity">60dp</dimen>
     <dimen name="logo_width_splash_activity">80dp</dimen>
+
+    <!--    Toolbar-->
+    <dimen name="toolbar_padding">8dp</dimen>
+
+    <!--    Drawer-->
+    <dimen name="drawer_icon_padding">26dp</dimen>
 </resources>

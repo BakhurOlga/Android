@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.olg.bakhur.R
-import com.olg.bakhur.application.AppConstants
+import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.domain.model.dto.PopularMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_popular_movie.view.*

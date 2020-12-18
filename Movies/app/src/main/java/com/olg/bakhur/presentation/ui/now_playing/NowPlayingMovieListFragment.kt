@@ -6,65 +6,62 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.olg.bakhur.R
-import com.olg.bakhur.application.App
-import com.olg.bakhur.application.AppConstants
+import com.olg.bakhur.common.App
+import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
-import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
 import com.olg.bakhur.presentation.ui.now_playing.adapter.NowPlayingMovieListAdapter
+import com.olg.bakhur.presentation.ui.viewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_now_playing_movie_list.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
-import com.olg.bakhur.presentation.ui.viewModel
 
 class NowPlayingMovieListFragment : Fragment() {
 
-    val viewModel by viewModel { App.component.nowPlayingMovieViewModel }
+    private val viewModel by viewModel { App.component.nowPlayingMovieViewModel }
     private var movieList: MutableList<NowPlayingMovie> = ArrayList()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_now_playing_movie_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpAdapter(movieList)
+        initRecyclerViewAdapter(movieList)
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.getNowPlayingMovieList(AppConstants.apiKey)
             .observe(
-                NowPlayingMovieListFragment@ this,
-                Observer { nowPlayingMovieList: List<NowPlayingMovie> ->
-                    movieList = nowPlayingMovieList as MutableList<NowPlayingMovie>
+                NowPlayingMovieListFragment@ this, Observer { list: List<NowPlayingMovie> ->
+                    movieList = list as MutableList<NowPlayingMovie>
                     val adapter = recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
                     adapter.setData(movieList)
                 })
     }
 
-    private fun setUpAdapter(list: MutableList<NowPlayingMovie>) {
+    private fun initRecyclerViewAdapter(list: MutableList<NowPlayingMovie>) {
         recyclerNowPlayingMovieList.apply {
             adapter = NowPlayingMovieListAdapter(object : OnItemMovieClickListener {
                 override fun displayMovieDetails(id: Int) {
-                    val bundle = Bundle()
-                    bundle.putInt(MovieDetailsFragment.KEY_BUNDLE_MOVIE_ID, id)
-                    findNavController().navigate(
-                        R.id.action_nowPlayingMovieListFragment_to_movieDetailsFragment,
-                        bundle
-                    )
+                    navigateToMovieDetailsFragment(id)
                 }
             })
             (adapter as NowPlayingMovieListAdapter).nowPlayingMoviesList = list
             layoutManager =
                 LinearLayoutManager(LatestMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
+    }
+
+    fun navigateToMovieDetailsFragment(id: Int) {
+        val action = NowPlayingMovieListFragmentDirections
+            .actionNowPlayingMovieListFragmentToMovieDetailsFragment(id)
+
+        findNavController().navigate(action)
     }
 }

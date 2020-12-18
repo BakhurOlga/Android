@@ -4,10 +4,11 @@
     <string name="app_name">Movies</string>
     <string name="average_vote">Average vote:</string>
 
-    <!--    Menu-->
+    <!--    Drawer-->
     <string name="topRated">Top rated</string>
     <string name="playingNow">Playing now</string>
     <string name="upcoming">Upcoming</string>
+    <string name="drawer_menu_title">Select</string>
 
     <!--    Details-->
     <string name="budget">Budget</string>

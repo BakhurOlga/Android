@@ -1,6 +1,6 @@
-package com.olg.bakhur.application.di.module
+package com.olg.bakhur.common.di.module
 
-import com.olg.bakhur.application.AppConstants
+import com.olg.bakhur.common.AppConstants
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

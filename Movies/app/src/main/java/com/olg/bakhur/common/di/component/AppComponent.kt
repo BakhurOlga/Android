@@ -1,8 +1,8 @@
-package com.olg.bakhur.application.di.component
+package com.olg.bakhur.common.di.component
 
 import android.app.Application
-import com.olg.bakhur.application.di.module.ApiModule
-import com.olg.bakhur.application.di.module.RepositoryModule
+import com.olg.bakhur.common.di.module.ApiModule
+import com.olg.bakhur.common.di.module.RepositoryModule
 import com.olg.bakhur.presentation.ui.details.MovieDetailsViewModel
 import com.olg.bakhur.presentation.ui.now_playing.NowPlayingMovieViewModel
 import com.olg.bakhur.presentation.ui.popular.PopularMovieViewModel
