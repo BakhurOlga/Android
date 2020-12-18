@@ -1,6 +1,5 @@
 package com.olg.bakhur.presentation.ui.popular
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,19 +19,12 @@ import com.olg.bakhur.presentation.ui.details.MovieDetailsFragment
 import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
-import javax.inject.Inject
+import com.olg.bakhur.presentation.ui.viewModel
 
 class PopularMovieListFragment : Fragment() {
 
-    @Inject
-    internal lateinit var popularMovieViewModel: PopularMovieViewModel
+    val viewModel by viewModel { App.component.popularMovieViewModel }
     private var movieList: MutableList<PopularMovie> = ArrayList()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        (requireActivity().application as App).appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +41,7 @@ class PopularMovieListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        popularMovieViewModel.getPopularMovieList(AppConstants.apiKey)
+        viewModel.getPopularMovieList(AppConstants.apiKey)
             .observe(PopularMovieListFragment@ this, Observer { popularMovieList: List<PopularMovie> ->
                 Log.d("TAG", popularMovieList.toString())
                 movieList = popularMovieList as MutableList<PopularMovie>

@@ -9,10 +9,14 @@
     <fragment
         android:id="@+id/popularMovieListFragment"
         android:name="com.olg.bakhur.presentation.ui.popular.PopularMovieListFragment"
-        android:label="PopularMovieListFragment">
+        android:label="PopularMovieListFragment"
+        tools:layout="@layout/fragment_popular_movie_list">
         <action
             android:id="@+id/action_popularMovieListFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_popularMovieListFragment_to_upcomingMovieListFragment"
+            app:destination="@id/upcomingMovieListFragment" />
     </fragment>
 
     <fragment
@@ -22,6 +26,12 @@
         <action
             android:id="@+id/action_nowPlayingMovieListFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_nowPlayingMovieListFragment_to_popularMovieListFragment"
+            app:destination="@id/popularMovieListFragment" />
+        <action
+            android:id="@+id/action_nowPlayingMovieListFragment_to_upcomingMovieListFragment"
+            app:destination="@id/upcomingMovieListFragment" />
     </fragment>
 
     <fragment
@@ -31,6 +41,9 @@
         <action
             android:id="@+id/action_upcomingMovieListFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_upcomingMovieListFragment_to_popularMovieListFragment2"
+            app:destination="@id/popularMovieListFragment" />
     </fragment>
 
     <fragment

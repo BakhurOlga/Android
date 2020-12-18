@@ -5,13 +5,6 @@ sealed class Result<out T> {
     data class Error(val throwable: Throwable) : Result<Nothing>()
 }
 
-inline fun <R, T> Result<T>.map(transform: (value: T) -> R): Result<R> {
-    return when (this) {
-        is Result.Success -> Result.Success(transform(value))
-        is Result.Error -> Result.Error(this.throwable)
-    }
-}
-
 inline fun <T> Result<T>.onSuccess(action: (value: T) -> Unit): Result<T> {
     if (this is Result.Success) action(value)
     return this

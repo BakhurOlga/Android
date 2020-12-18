@@ -1,6 +1,5 @@
 package com.olg.bakhur.presentation.ui.details
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,19 +12,12 @@ import com.olg.bakhur.application.App
 import com.olg.bakhur.application.AppConstants
 import com.olg.bakhur.domain.model.dto.MovieDetails
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import javax.inject.Inject
+import com.olg.bakhur.presentation.ui.viewModel
 
 class MovieDetailsFragment : Fragment() {
 
-    @Inject
-    internal lateinit var movieDetailsViewModel: MovieDetailsViewModel
+    val viewModel by viewModel { App.component.movieDetailsViewModel }
     private var movieId: Int? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        (requireActivity().application as App).appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +31,7 @@ class MovieDetailsFragment : Fragment() {
 
         movieId = arguments?.getInt(KEY_BUNDLE_MOVIE_ID)
         movieId?.let {
-            movieDetailsViewModel.getMovieDetails(it, AppConstants.apiKey)
+            viewModel.getMovieDetails(it, AppConstants.apiKey)
                 .observe(MovieDetailsFragment@ this, Observer { movieDetails: MovieDetails ->
 
                     with(movieDetails) {

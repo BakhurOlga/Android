@@ -15,11 +15,13 @@ import com.olg.bakhur.presentation.ui.upcoming.UpcomingMovieViewModel
 
 class App : Application() {
 
-    val appComponent: AppComponent by lazy {
-        initializeComponent()
+    override fun onCreate() {
+        super.onCreate()
+        component = DaggerAppComponent.factory().create(this)
     }
 
-    fun initializeComponent(): AppComponent {
-        return DaggerAppComponent.factory().create(this)
+    companion object {
+        lateinit var component: AppComponent
+            private set
     }
 }
