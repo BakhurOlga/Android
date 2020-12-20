@@ -9,48 +9,58 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.olg.bakhur.R
 import com.olg.bakhur.common.App
 import com.olg.bakhur.common.AppConstants
+import com.olg.bakhur.databinding.FragmentUpcomingMovieListBinding
 import com.olg.bakhur.domain.model.dto.UpcomingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
+import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.presentation.ui.upcoming.adapter.UpcomingMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
-import kotlinx.android.synthetic.main.fragment_upcoming_movie_list.*
 
 class UpcomingMovieListFragment : Fragment() {
+
+    private var bindingInst: FragmentUpcomingMovieListBinding? = null
+    private val binding get() = bindingInst!!
 
     private val viewModel by viewModel { App.component.upcomingMovieViewModel }
     private var movieList: MutableList<UpcomingMovie> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.fragment_upcoming_movie_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        bindingInst = FragmentUpcomingMovieListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindingInst = FragmentUpcomingMovieListBinding.bind(view)
 
         setupRecyclerView(movieList)
         fetchData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bindingInst = null
+    }
+
     private fun setupRecyclerView(list: MutableList<UpcomingMovie>) {
-        recyclerUpcomingMovieList.apply {
-            adapter = UpcomingMovieListAdapter(object : OnItemMovieClickListener {
+        binding.recyclerUpcomingMovieList.apply {
+            adapter = UpcomingMovieListAdapter(object : OnItemClickListener {
                 override fun openDetails(id: Int) {
                     navigateToMovieDetailsFragment(id)
                 }
             })
             (adapter as UpcomingMovieListAdapter).upcomingMoviesList = list
             layoutManager =
-                LinearLayoutManager(UpcomingMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
     }
 
     private fun fetchData(){
         viewModel.getUpcomingMoviesList(AppConstants.apiKey)
-            .observe(UpcomingMovieListFragment@ this, Observer { list: List<UpcomingMovie> -> // TODO: говорит, что poster_path == null. Но раньше не был
+            .observe(viewLifecycleOwner, Observer { list: List<UpcomingMovie> ->
                 movieList = list as MutableList<UpcomingMovie>
-                val adapter = recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
+                val adapter = binding.recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
                 adapter.setData(movieList)
             })
     }

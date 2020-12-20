@@ -1,30 +1,29 @@
 package com.olg.bakhur.presentation.ui.popular.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.olg.bakhur.R
 import com.olg.bakhur.common.AppConstants
+import com.olg.bakhur.databinding.ItemPopularMovieBinding as Binding
 import com.olg.bakhur.domain.model.dto.PopularMovie
-import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
-import kotlinx.android.synthetic.main.item_popular_movie.view.*
+import com.olg.bakhur.presentation.ui.common.OnItemClickListener
+
 
 class PopularMovieListAdapter(
-    private val onItemMovieClickListener: OnItemMovieClickListener
-) : RecyclerView.Adapter<PopularMovieListAdapter.PopularMovieListViewHolder>() {
+    private val onItemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<PopularMovieListAdapter.ItemViewHolder>() {
 
     var popularMoviesList: MutableList<PopularMovie> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMovieListViewHolder =
-        PopularMovieListViewHolder(
-            itemView = parent.run {
-                LayoutInflater.from(parent.context).inflate(R.layout.item_popular_movie, parent, false)
-            })
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemBinding = Binding.inflate(layoutInflater, parent, false)
+        return ItemViewHolder(itemBinding)
+    }
 
-    override fun onBindViewHolder(holder: PopularMovieListViewHolder, position: Int) {
-        holder.bind(popularMoviesList[position], onItemMovieClickListener)
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(popularMoviesList[position], onItemClickListener)
     }
 
     override fun getItemCount(): Int = popularMoviesList.size
@@ -37,21 +36,19 @@ class PopularMovieListAdapter(
         notifyDataSetChanged()
     }
 
-    class PopularMovieListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(private val binding: Binding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(popularMovie: PopularMovie, onItemMovieClickListener: OnItemMovieClickListener) {
-            with(popularMovie) {
-                itemView.apply {
-                    textViewMovieTitleItem.text = title
-                    textViewAverageVoteItem.text = voteAverage.toString()
-                }
-                itemView.setOnClickListener { onItemMovieClickListener.openDetails(id) }
+        fun bind(popularMovie: PopularMovie, onItemClickListener: OnItemClickListener) {
+            with(itemView){
+                binding.textViewMovieTitleItem.text = popularMovie.title
+                binding.textViewAverageVoteItem.text = popularMovie.voteAverage.toString()
 
-                val posterAddress: String = AppConstants.posterBaseUrl + posterPath
-
+                val posterAddress: String = AppConstants.posterBaseUrl + popularMovie.posterPath
                 Glide.with(itemView.context)
                     .load(posterAddress)
-                    .into(itemView.imageViewPosterItem)
+                    .into(binding.imageViewPosterItem)
+
+                setOnClickListener { onItemClickListener.openDetails(popularMovie.id) }
             }
         }
     }

@@ -1,5 +1,5 @@
 package com.olg.bakhur.presentation.ui.common
 
-interface OnItemMovieClickListener {
+interface OnItemClickListener {
     fun openDetails(id: Int)
 }

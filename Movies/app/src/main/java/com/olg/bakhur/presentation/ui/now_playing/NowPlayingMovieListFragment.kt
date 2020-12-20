@@ -1,6 +1,7 @@
 package com.olg.bakhur.presentation.ui.now_playing
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,49 +10,60 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.olg.bakhur.R
 import com.olg.bakhur.common.App
 import com.olg.bakhur.common.AppConstants
+import com.olg.bakhur.databinding.FragmentNowPlayingMovieListBinding
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
+import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.presentation.ui.now_playing.adapter.NowPlayingMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
-import kotlinx.android.synthetic.main.fragment_now_playing_movie_list.*
 
 class NowPlayingMovieListFragment : Fragment() {
+
+    private var bindingInst: FragmentNowPlayingMovieListBinding? = null
+    private val binding get() = bindingInst!!
 
     private val viewModel by viewModel { App.component.nowPlayingMovieViewModel }
     private var movieList: MutableList<NowPlayingMovie> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.fragment_now_playing_movie_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        bindingInst = FragmentNowPlayingMovieListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindingInst = FragmentNowPlayingMovieListBinding.bind(view) // TODO зачем?
 
         setupRecyclerView(movieList)
         fetchData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bindingInst = null
+    }
+
     private fun setupRecyclerView(list: MutableList<NowPlayingMovie>) {
-        recyclerNowPlayingMovieList.apply {
-            adapter = NowPlayingMovieListAdapter(object : OnItemMovieClickListener {
+        binding.recyclerNowPlayingMovieList.apply {
+            adapter = NowPlayingMovieListAdapter(object : OnItemClickListener {
                 override fun openDetails(id: Int) {
+                    Log.d("TAG", "openDetails $id")
                     navigateToMovieDetailsFragment(id)
                 }
             })
             (adapter as NowPlayingMovieListAdapter).nowPlayingMoviesList = list
             layoutManager =
-                LinearLayoutManager(LatestMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
     }
 
     private fun fetchData(){
         viewModel.getNowPlayingMovieList(AppConstants.apiKey)
             .observe(
-                NowPlayingMovieListFragment@ this, Observer { list: List<NowPlayingMovie> ->
+                viewLifecycleOwner, Observer { list: List<NowPlayingMovie> ->
                     movieList = list as MutableList<NowPlayingMovie>
-                    val adapter = recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
+                    val adapter = binding.recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
                     adapter.setData(movieList)
                 })
     }

@@ -1,30 +1,28 @@
 package com.olg.bakhur.presentation.ui.now_playing.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.olg.bakhur.R
 import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
-import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
+import com.olg.bakhur.presentation.ui.common.OnItemClickListener
+import com.olg.bakhur.databinding.ItemNowPlayingMovieBinding as Binding
 
 class NowPlayingMovieListAdapter(
-    private val onItemMovieClickListener: OnItemMovieClickListener
-) : RecyclerView.Adapter<NowPlayingMovieListAdapter.NowPlayingMovieListViewHolder>() {
+    private val onItemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<NowPlayingMovieListAdapter.ItemViewHolder>() {
 
     var nowPlayingMoviesList: MutableList<NowPlayingMovie> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingMovieListViewHolder =
-        NowPlayingMovieListViewHolder(
-            itemView = parent.run {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_now_playing_movie, parent, false)
-        })
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemBinding = Binding.inflate(layoutInflater, parent, false)
+        return ItemViewHolder(itemBinding)
+    }
 
-    override fun onBindViewHolder(holder: NowPlayingMovieListViewHolder, position: Int) {
-        holder.bind(nowPlayingMoviesList[position], onItemMovieClickListener)
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(nowPlayingMoviesList[position], onItemClickListener)
     }
 
     override fun getItemCount(): Int = nowPlayingMoviesList.size
@@ -37,21 +35,18 @@ class NowPlayingMovieListAdapter(
         notifyDataSetChanged()
     }
 
-    class NowPlayingMovieListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(private val binding: Binding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(nowPlayingMovie: NowPlayingMovie, onItemMovieClickListener: OnItemMovieClickListener) {
-            with(nowPlayingMovie) {
-                itemView.apply {
-                    textViewMovieTitleItem.text = title
-                    textViewAverageVoteItem.text = voteAverage.toString()
-                }
-                itemView.setOnClickListener { onItemMovieClickListener.openDetails(id) }
+        fun bind(nowPlayingMovie: NowPlayingMovie, onItemClickListener: OnItemClickListener) {
+            with(itemView){ // TODO откуда?
+                binding.textViewMovieTitleItem.text = nowPlayingMovie.title
+                binding.textViewAverageVoteItem.text = nowPlayingMovie.voteAverage.toString()
 
-                val posterAddress: String = AppConstants.posterBaseUrl + posterPath
-
+                val posterAddress: String = AppConstants.posterBaseUrl + nowPlayingMovie.posterPath
                 Glide.with(itemView.context)
                     .load(posterAddress)
-                    .into(itemView.imageViewPosterItem)
+                    .into(binding.imageViewPosterItem)
+                setOnClickListener { onItemClickListener.openDetails(nowPlayingMovie.id) }
             }
         }
     }

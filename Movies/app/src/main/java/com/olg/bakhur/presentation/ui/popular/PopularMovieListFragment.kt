@@ -9,48 +9,58 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.olg.bakhur.R
 import com.olg.bakhur.common.App
 import com.olg.bakhur.common.AppConstants
+import com.olg.bakhur.databinding.FragmentPopularMovieListBinding
 import com.olg.bakhur.domain.model.dto.PopularMovie
-import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
+import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
-import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 
 class PopularMovieListFragment : Fragment() {
+
+    private var bindingInst: FragmentPopularMovieListBinding? = null
+    private val binding get() = bindingInst!!
 
     private val viewModel by viewModel { App.component.popularMovieViewModel }
     private var movieList: MutableList<PopularMovie> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.fragment_popular_movie_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        bindingInst = FragmentPopularMovieListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindingInst = FragmentPopularMovieListBinding.bind(view)
 
         setupRecyclerView(movieList)
         fetchData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bindingInst = null
+    }
+
     private fun setupRecyclerView(list: MutableList<PopularMovie>) {
-        recyclerPopularMovieList.apply {
-            adapter = PopularMovieListAdapter(object : OnItemMovieClickListener {
+        binding.recyclerPopularMovieList.apply {
+            adapter = PopularMovieListAdapter(object : OnItemClickListener {
                 override fun openDetails(id: Int) {
                     navigateToMovieDetailsFragment(id)
                 }
             })
             (adapter as PopularMovieListAdapter).popularMoviesList = list
             layoutManager =
-                LinearLayoutManager(PopularMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
     }
 
     private fun fetchData(){
         viewModel.getPopularMovieList(AppConstants.apiKey)
-            .observe(PopularMovieListFragment@ this, Observer { list: List<PopularMovie> ->
+            .observe(viewLifecycleOwner, Observer { list: List<PopularMovie> ->
                 movieList = list as MutableList<PopularMovie>
-                val adapter = recyclerPopularMovieList.adapter as PopularMovieListAdapter
+                val adapter = binding.recyclerPopularMovieList.adapter as PopularMovieListAdapter
                 adapter.setData(movieList)
             })
     }

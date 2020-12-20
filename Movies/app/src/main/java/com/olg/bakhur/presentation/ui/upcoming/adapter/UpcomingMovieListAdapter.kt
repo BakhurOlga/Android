@@ -1,29 +1,28 @@
 package com.olg.bakhur.presentation.ui.upcoming.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.olg.bakhur.R
 import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.domain.model.dto.UpcomingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
-import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
+import com.olg.bakhur.presentation.ui.common.OnItemClickListener
+import com.olg.bakhur.databinding.ItemNowPlayingMovieBinding as Binding
 
 class UpcomingMovieListAdapter(
-    private val onItemMovieClickListener: OnItemMovieClickListener
-    ) : RecyclerView.Adapter<UpcomingMovieListAdapter.UpcomingMovieListViewHolder>() {
+    private val onItemClickListener: OnItemClickListener
+    ) : RecyclerView.Adapter<UpcomingMovieListAdapter.ItemViewHolder>() {
 
     var upcomingMoviesList: MutableList<UpcomingMovie> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingMovieListViewHolder =
-        UpcomingMovieListViewHolder(itemView = parent.run {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_upcoming_movie, parent, false)
-        })
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val itemBinding = Binding.inflate(layoutInflater, parent, false)
+        return ItemViewHolder(itemBinding)
+    }
 
-    override fun onBindViewHolder(holder: UpcomingMovieListViewHolder, position: Int) {
-        holder.bind(upcomingMoviesList[position], onItemMovieClickListener)
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        holder.bind(upcomingMoviesList[position], onItemClickListener)
     }
 
     override fun getItemCount(): Int = upcomingMoviesList.size
@@ -36,22 +35,19 @@ class UpcomingMovieListAdapter(
         notifyDataSetChanged()
     }
 
-    class UpcomingMovieListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(private val binding: Binding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(upcomingMovie: UpcomingMovie, onItemMovieClickListener: OnItemMovieClickListener) {
-            with(upcomingMovie) {
+        fun bind(upcomingMovie: UpcomingMovie, onItemClickListener: OnItemClickListener) {
+            with(itemView){
+                binding.textViewMovieTitleItem.text = upcomingMovie.title
+                binding.textViewAverageVoteItem.text = upcomingMovie.voteAverage.toString()
 
-                itemView.apply {
-                    textViewMovieTitleItem.text = title
-                    textViewAverageVoteItem.text = voteAverage.toString()
-                }
-                itemView.setOnClickListener { onItemMovieClickListener.openDetails(id) }
-
-                val posterAddress: String = AppConstants.posterBaseUrl + posterPath
-
+                val posterAddress: String = AppConstants.posterBaseUrl + upcomingMovie.posterPath
                 Glide.with(itemView.context)
                     .load(posterAddress)
-                    .into(itemView.imageViewPosterItem)
+                    .into(binding.imageViewPosterItem)
+
+                setOnClickListener { onItemClickListener.openDetails(upcomingMovie.id) }
             }
         }
     }
