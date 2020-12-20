@@ -11,8 +11,9 @@ import com.olg.bakhur.domain.model.dto.PopularMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_popular_movie.view.*
 
-class PopularMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :
-    RecyclerView.Adapter<PopularMovieListAdapter.PopularMovieListViewHolder>() {
+class PopularMovieListAdapter(
+    private val onItemMovieClickListener: OnItemMovieClickListener
+) : RecyclerView.Adapter<PopularMovieListAdapter.PopularMovieListViewHolder>() {
 
     var popularMoviesList: MutableList<PopularMovie> = ArrayList()
 
@@ -40,13 +41,11 @@ class PopularMovieListAdapter(private val onItemMovieClickListener: OnItemMovieC
 
         fun bind(popularMovie: PopularMovie, onItemMovieClickListener: OnItemMovieClickListener) {
             with(popularMovie) {
-
                 itemView.apply {
                     textViewMovieTitleItem.text = title
                     textViewAverageVoteItem.text = voteAverage.toString()
                 }
-
-                itemView.setOnClickListener { onItemMovieClickListener.displayMovieDetails(id) }
+                itemView.setOnClickListener { onItemMovieClickListener.openDetails(id) }
 
                 val posterAddress: String = AppConstants.posterBaseUrl + posterPath
 

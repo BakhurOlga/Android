@@ -24,7 +24,7 @@ class NowPlayingMovieViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getNowPlayingMoviesList(apiKey)
                 .onSuccess { nowPlayingMovieListMutableLD.postValue(it) }
-                .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
+                .onError { Log.d("TAG", "ERROR: ${it.message}") }
         }
         return nowPlayingMovieListLD
     }

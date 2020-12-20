@@ -24,7 +24,7 @@ class UpcomingMovieViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getUpcomingMoviesList(apiKey)
                 .onSuccess { upcomingMoviesListMutableLD.postValue(it) }
-                .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
+                .onError { Log.d("TAG", "ERROR: ${it.message}") }
         }
         return upcomingMoviesListListLD
     }

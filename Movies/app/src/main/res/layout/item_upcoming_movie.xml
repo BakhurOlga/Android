@@ -10,7 +10,7 @@
         android:id="@+id/textViewMovieTitleItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MovieTitle_TextStyle"
+        style="@style/MovieListTitle_TextStyle"
         android:textSize="@dimen/title_text_size_list"
         android:gravity="center"
         tools:text="Movie Title"/>
@@ -24,9 +24,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical|end"
             android:text="@string/average_vote"
-            style="@style/MovieTitle_TextStyle"
+            style="@style/MovieListTitle_TextStyle"
             android:textSize="@dimen/mark_text_size_list"/>
 
         <TextView
@@ -34,8 +34,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical|left"
-            style="@style/MovieTitle_TextStyle"
+            android:gravity="center_vertical|start"
+            style="@style/MovieListTitle_TextStyle"
             android:textSize="@dimen/mark_text_size_list"
             tools:text="5.0"/>
     </LinearLayout>

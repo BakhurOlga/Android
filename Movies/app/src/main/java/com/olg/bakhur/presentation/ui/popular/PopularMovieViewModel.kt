@@ -24,7 +24,7 @@ class PopularMovieViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getPopularMoviesList(apiKey)
                 .onSuccess { popularMovieListMutableLD.postValue(it) }
-                .onError { it -> Log.d("TAG", "ERROR: ${it.message}") }
+                .onError { Log.d("TAG", "ERROR: ${it.message}") }
         }
         return popularMovieListListLD
     }

@@ -18,7 +18,8 @@ class NowPlayingMovieListAdapter(
     var nowPlayingMoviesList: MutableList<NowPlayingMovie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingMovieListViewHolder =
-        NowPlayingMovieListViewHolder(itemView = parent.run {
+        NowPlayingMovieListViewHolder(
+            itemView = parent.run {
             LayoutInflater.from(parent.context).inflate(R.layout.item_now_playing_movie, parent, false)
         })
 
@@ -40,13 +41,11 @@ class NowPlayingMovieListAdapter(
 
         fun bind(nowPlayingMovie: NowPlayingMovie, onItemMovieClickListener: OnItemMovieClickListener) {
             with(nowPlayingMovie) {
-
                 itemView.apply {
                     textViewMovieTitleItem.text = title
                     textViewAverageVoteItem.text = voteAverage.toString()
                 }
-
-                itemView.setOnClickListener { onItemMovieClickListener.displayMovieDetails(id) }
+                itemView.setOnClickListener { onItemMovieClickListener.openDetails(id) }
 
                 val posterAddress: String = AppConstants.posterBaseUrl + posterPath
 

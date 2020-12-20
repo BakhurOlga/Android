@@ -16,9 +16,7 @@ import com.olg.bakhur.domain.model.dto.NowPlayingMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.now_playing.adapter.NowPlayingMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_now_playing_movie_list.*
-import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 
 class NowPlayingMovieListFragment : Fragment() {
 
@@ -31,24 +29,14 @@ class NowPlayingMovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerViewAdapter(movieList)
+        setupRecyclerView(movieList)
+        fetchData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getNowPlayingMovieList(AppConstants.apiKey)
-            .observe(
-                NowPlayingMovieListFragment@ this, Observer { list: List<NowPlayingMovie> ->
-                    movieList = list as MutableList<NowPlayingMovie>
-                    val adapter = recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
-                    adapter.setData(movieList)
-                })
-    }
-
-    private fun initRecyclerViewAdapter(list: MutableList<NowPlayingMovie>) {
+    private fun setupRecyclerView(list: MutableList<NowPlayingMovie>) {
         recyclerNowPlayingMovieList.apply {
             adapter = NowPlayingMovieListAdapter(object : OnItemMovieClickListener {
-                override fun displayMovieDetails(id: Int) {
+                override fun openDetails(id: Int) {
                     navigateToMovieDetailsFragment(id)
                 }
             })
@@ -56,6 +44,16 @@ class NowPlayingMovieListFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(LatestMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
+    }
+
+    private fun fetchData(){
+        viewModel.getNowPlayingMovieList(AppConstants.apiKey)
+            .observe(
+                NowPlayingMovieListFragment@ this, Observer { list: List<NowPlayingMovie> ->
+                    movieList = list as MutableList<NowPlayingMovie>
+                    val adapter = recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
+                    adapter.setData(movieList)
+                })
     }
 
     fun navigateToMovieDetailsFragment(id: Int) {

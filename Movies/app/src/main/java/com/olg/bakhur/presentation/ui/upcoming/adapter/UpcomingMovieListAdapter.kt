@@ -11,8 +11,9 @@ import com.olg.bakhur.domain.model.dto.UpcomingMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import kotlinx.android.synthetic.main.item_now_playing_movie.view.*
 
-class UpcomingMovieListAdapter(private val onItemMovieClickListener: OnItemMovieClickListener) :
-    RecyclerView.Adapter<UpcomingMovieListAdapter.UpcomingMovieListViewHolder>() {
+class UpcomingMovieListAdapter(
+    private val onItemMovieClickListener: OnItemMovieClickListener
+    ) : RecyclerView.Adapter<UpcomingMovieListAdapter.UpcomingMovieListViewHolder>() {
 
     var upcomingMoviesList: MutableList<UpcomingMovie> = ArrayList()
 
@@ -44,8 +45,7 @@ class UpcomingMovieListAdapter(private val onItemMovieClickListener: OnItemMovie
                     textViewMovieTitleItem.text = title
                     textViewAverageVoteItem.text = voteAverage.toString()
                 }
-
-                itemView.setOnClickListener { onItemMovieClickListener.displayMovieDetails(id) }
+                itemView.setOnClickListener { onItemMovieClickListener.openDetails(id) }
 
                 val posterAddress: String = AppConstants.posterBaseUrl + posterPath
 

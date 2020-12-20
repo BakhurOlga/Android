@@ -16,7 +16,6 @@ import com.olg.bakhur.domain.model.dto.UpcomingMovie
 import com.olg.bakhur.presentation.ui.common.OnItemMovieClickListener
 import com.olg.bakhur.presentation.ui.upcoming.adapter.UpcomingMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
-import kotlinx.android.synthetic.main.fragment_popular_movie_list.*
 import kotlinx.android.synthetic.main.fragment_upcoming_movie_list.*
 
 class UpcomingMovieListFragment : Fragment() {
@@ -30,23 +29,14 @@ class UpcomingMovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerViewAdapter(movieList)
+        setupRecyclerView(movieList)
+        fetchData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getUpcomingMoviesList(AppConstants.apiKey)
-            .observe(UpcomingMovieListFragment@ this, Observer { list: List<UpcomingMovie> ->
-                movieList = list as MutableList<UpcomingMovie>
-                val adapter = recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
-                adapter.setData(movieList)
-            })
-    }
-
-    private fun initRecyclerViewAdapter(list: MutableList<UpcomingMovie>) {
+    private fun setupRecyclerView(list: MutableList<UpcomingMovie>) {
         recyclerUpcomingMovieList.apply {
             adapter = UpcomingMovieListAdapter(object : OnItemMovieClickListener {
-                override fun displayMovieDetails(id: Int) {
+                override fun openDetails(id: Int) {
                     navigateToMovieDetailsFragment(id)
                 }
             })
@@ -54,6 +44,15 @@ class UpcomingMovieListFragment : Fragment() {
             layoutManager =
                 LinearLayoutManager(UpcomingMovieListFragment@ this.context, RecyclerView.VERTICAL, false)
         }
+    }
+
+    private fun fetchData(){
+        viewModel.getUpcomingMoviesList(AppConstants.apiKey)
+            .observe(UpcomingMovieListFragment@ this, Observer { list: List<UpcomingMovie> -> // TODO: говорит, что poster_path == null. Но раньше не был
+                movieList = list as MutableList<UpcomingMovie>
+                val adapter = recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
+                adapter.setData(movieList)
+            })
     }
 
     fun navigateToMovieDetailsFragment(id: Int) {

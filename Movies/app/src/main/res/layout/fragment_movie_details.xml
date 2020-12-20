@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/fragment_layout_movie_details"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@android:color/white"
-android:padding="@dimen/details_frame_padding"
-xmlns:tools="http://schemas.android.com/tools">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_layout_movie_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/details_frame_padding"
+    xmlns:tools="http://schemas.android.com/tools">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -19,8 +20,9 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_height="wrap_content"
         android:gravity="center"
         style="@style/MovieDetails_TextStyle"
+        android:textColor="@color/primary"
         android:textSize="@dimen/details_title_text_size"
-        android:layout_marginBottom="@dimen/details_margin"
+        android:layout_marginBottom="@dimen/details_margin_padding"
         tools:text="Movie Title"/>
 
     <ImageView
@@ -29,29 +31,38 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_height="@dimen/details_poster_height"
         android:layout_gravity="center"
         android:scaleType="fitStart"
-        android:layout_marginBottom="@dimen/details_margin"
+        android:layout_marginBottom="@dimen/details_margin_padding"
         tools:src="@drawable/ic_launcher_background" />
 
-    <TableLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/details_margin">
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="@dimen/cardView_cornerRadius"
+        app:cardElevation="@dimen/cardView_default_elevation"
+        android:layout_marginBottom="@dimen/details_margin_padding">
+
+        <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/details_margin_padding" android:padding="@dimen/details_margin_padding">
+
         <TableRow>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="@string/budget"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
-                android:layout_marginRight="@dimen/details_margin_right"/>
+                android:layout_marginEnd="@dimen/details_row_margin"/>
             <TextView
                 android:id="@+id/textViewMovieBudget"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="start"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
                 tools:text="100 000"/>
@@ -61,17 +72,17 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="@string/original_language"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
-                android:layout_marginRight="@dimen/details_margin_right"/>
+                android:layout_marginEnd="@dimen/details_row_margin"/>
             <TextView
                 android:id="@+id/textViewMovieOriginalLang"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="start"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
                 tools:text="en"/>
@@ -81,17 +92,17 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="@string/popularity"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
-                android:layout_marginRight="@dimen/details_margin_right"/>
+                android:layout_marginEnd="@dimen/details_row_margin"/>
             <TextView
                 android:id="@+id/textViewMoviePopularity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="start"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
                 tools:text="Popularity"/>
@@ -101,17 +112,17 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="@string/release_date"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
-                android:layout_marginRight="@dimen/details_margin_right"/>
+                android:layout_marginEnd="@dimen/details_row_margin"/>
             <TextView
                 android:id="@+id/textViewMovieReleaseDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="start"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
                 tools:text="Release date"/>
@@ -121,41 +132,55 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="@string/average_vote"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
-                android:layout_marginRight="@dimen/details_margin_right"/>
+                android:layout_marginEnd="@dimen/details_row_margin"/>
             <TextView
                 android:id="@+id/textViewAverageVote"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="start"
                 style="@style/MovieDetails_TextStyle"
                 android:textSize="@dimen/details_general_text_size"
                 tools:text="5.0"/>
         </TableRow>
     </TableLayout>
+    </androidx.cardview.widget.CardView>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="@string/overview"
-        style="@style/MovieDetails_TextStyle"
-        android:textSize="@dimen/details_general_text_size"
-        android:layout_marginRight="@dimen/details_margin_right"/>
-
-    <TextView
-        android:id="@+id/textViewOverview"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        style="@style/MovieDetails_TextStyle"
-        android:textSize="@dimen/details_general_text_size"
-        tools:text="About the movie..."/>
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="@dimen/cardView_cornerRadius"
+        app:cardElevation="@dimen/cardView_default_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/details_margin_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/overview"
+                style="@style/MovieDetails_TextStyle"
+                android:textSize="@dimen/details_general_text_size" />
+
+            <TextView
+                android:id="@+id/textViewOverview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                style="@style/MovieDetails_TextStyle"
+                android:textSize="@dimen/details_general_text_size"
+                tools:text="About the movie..."/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
 
