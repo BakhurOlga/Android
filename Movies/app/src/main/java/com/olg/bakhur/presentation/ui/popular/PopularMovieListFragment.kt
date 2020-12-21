@@ -25,7 +25,7 @@ class PopularMovieListFragment : Fragment() {
     private val viewModel by viewModel { App.component.popularMovieViewModel }
     private var movieList: MutableList<PopularMovie> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         bindingInst = FragmentPopularMovieListBinding.inflate(inflater, container, false)
         return binding.root
     }

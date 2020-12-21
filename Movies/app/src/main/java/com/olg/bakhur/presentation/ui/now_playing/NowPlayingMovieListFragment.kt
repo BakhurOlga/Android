@@ -33,7 +33,7 @@ class NowPlayingMovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindingInst = FragmentNowPlayingMovieListBinding.bind(view) // TODO зачем?
+        bindingInst = FragmentNowPlayingMovieListBinding.bind(view)
 
         setupRecyclerView(movieList)
         fetchData()
@@ -48,7 +48,6 @@ class NowPlayingMovieListFragment : Fragment() {
         binding.recyclerNowPlayingMovieList.apply {
             adapter = NowPlayingMovieListAdapter(object : OnItemClickListener {
                 override fun openDetails(id: Int) {
-                    Log.d("TAG", "openDetails $id")
                     navigateToMovieDetailsFragment(id)
                 }
             })

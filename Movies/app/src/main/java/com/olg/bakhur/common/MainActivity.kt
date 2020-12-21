@@ -17,8 +17,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_Movies)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         setUpDrawer()
     }

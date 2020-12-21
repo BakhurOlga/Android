@@ -38,7 +38,7 @@ class NowPlayingMovieListAdapter(
     class ItemViewHolder(private val binding: Binding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(nowPlayingMovie: NowPlayingMovie, onItemClickListener: OnItemClickListener) {
-            with(itemView){ // TODO откуда?
+            with(itemView){
                 binding.textViewMovieTitleItem.text = nowPlayingMovie.title
                 binding.textViewAverageVoteItem.text = nowPlayingMovie.voteAverage.toString()
 
