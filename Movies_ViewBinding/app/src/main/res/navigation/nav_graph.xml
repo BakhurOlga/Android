@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nowPlayingMovieListFragment">
+
+    <fragment
+        android:id="@+id/nowPlayingMovieListFragment"
+        android:name="com.olg.bakhur.presentation.ui.now_playing.NowPlayingMovieListFragment"
+        android:label="Playing now"
+        tools:layout="@layout/fragment_now_playing_movie_list">
+        <action
+            android:id="@+id/action_nowPlayingMovieListFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/popularMovieListFragment"
+        android:name="com.olg.bakhur.presentation.ui.popular.PopularMovieListFragment"
+        android:label="Top rated"
+        tools:layout="@layout/fragment_popular_movie_list">
+        <action
+            android:id="@+id/action_popularMovieListFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/upcomingMovieListFragment"
+        android:name="com.olg.bakhur.presentation.ui.upcoming.UpcomingMovieListFragment"
+        android:label="Upcoming"
+        tools:layout="@layout/fragment_upcoming_movie_list">
+        <action
+            android:id="@+id/action_upcomingMovieListFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.olg.bakhur.presentation.ui.details.MovieDetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_movie_details">
+        <argument
+            android:name="movieId"
+            app:argType="integer"/>
+    </fragment>
+</navigation>
