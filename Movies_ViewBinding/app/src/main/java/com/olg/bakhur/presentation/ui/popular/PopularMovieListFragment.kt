@@ -13,7 +13,6 @@ import com.olg.bakhur.common.App
 import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.databinding.FragmentPopularMovieListBinding
 import com.olg.bakhur.domain.model.dto.PopularMovie
-import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.presentation.ui.popular.adapter.PopularMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
 
@@ -24,6 +23,8 @@ class PopularMovieListFragment : Fragment() {
 
     private val viewModel by viewModel { App.component.popularMovieViewModel }
     private var movieList: MutableList<PopularMovie> = ArrayList()
+    private val rvAdapter by lazy { PopularMovieListAdapter(this@PopularMovieListFragment::openDetails) }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         bindingInst = FragmentPopularMovieListBinding.inflate(inflater, container, false)
@@ -45,27 +46,21 @@ class PopularMovieListFragment : Fragment() {
 
     private fun setupRecyclerView(list: MutableList<PopularMovie>) {
         binding.recyclerPopularMovieList.apply {
-            adapter = PopularMovieListAdapter(object : OnItemClickListener {
-                override fun openDetails(id: Int) {
-                    navigateToMovieDetailsFragment(id)
-                }
-            })
-            (adapter as PopularMovieListAdapter).popularMoviesList = list
-            layoutManager =
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
+        rvAdapter.popularMoviesList = list
     }
 
     private fun fetchData(){
         viewModel.getPopularMovieList(AppConstants.apiKey)
             .observe(viewLifecycleOwner, Observer { list: List<PopularMovie> ->
                 movieList = list as MutableList<PopularMovie>
-                val adapter = binding.recyclerPopularMovieList.adapter as PopularMovieListAdapter
-                adapter.setData(movieList)
+                rvAdapter.setData(movieList)
             })
     }
 
-    fun navigateToMovieDetailsFragment(id: Int) {
+    private fun openDetails(id: Int) {
         val action = PopularMovieListFragmentDirections
             .actionPopularMovieListFragmentToMovieDetailsFragment(id)
 

@@ -13,7 +13,6 @@ import com.olg.bakhur.common.App
 import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.databinding.FragmentUpcomingMovieListBinding
 import com.olg.bakhur.domain.model.dto.UpcomingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.presentation.ui.upcoming.adapter.UpcomingMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
 
@@ -24,6 +23,8 @@ class UpcomingMovieListFragment : Fragment() {
 
     private val viewModel by viewModel { App.component.upcomingMovieViewModel }
     private var movieList: MutableList<UpcomingMovie> = ArrayList()
+    private val rvAdapter by lazy { UpcomingMovieListAdapter(this@UpcomingMovieListFragment::openDetails) }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         bindingInst = FragmentUpcomingMovieListBinding.inflate(inflater, container, false)
@@ -45,27 +46,21 @@ class UpcomingMovieListFragment : Fragment() {
 
     private fun setupRecyclerView(list: MutableList<UpcomingMovie>) {
         binding.recyclerUpcomingMovieList.apply {
-            adapter = UpcomingMovieListAdapter(object : OnItemClickListener {
-                override fun openDetails(id: Int) {
-                    navigateToMovieDetailsFragment(id)
-                }
-            })
-            (adapter as UpcomingMovieListAdapter).upcomingMoviesList = list
-            layoutManager =
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
+        rvAdapter.upcomingMoviesList = list
     }
 
     private fun fetchData(){
         viewModel.getUpcomingMoviesList(AppConstants.apiKey)
             .observe(viewLifecycleOwner, Observer { list: List<UpcomingMovie> ->
                 movieList = list as MutableList<UpcomingMovie>
-                val adapter = binding.recyclerUpcomingMovieList.adapter as UpcomingMovieListAdapter
-                adapter.setData(movieList)
+                rvAdapter.setData(movieList)
             })
     }
 
-    fun navigateToMovieDetailsFragment(id: Int) {
+    private fun openDetails(id: Int) {
         val action = UpcomingMovieListFragmentDirections
             .actionUpcomingMovieListFragmentToMovieDetailsFragment(id)
 

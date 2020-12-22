@@ -1,7 +1,6 @@
 package com.olg.bakhur.presentation.ui.now_playing
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.olg.bakhur.common.App
 import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.databinding.FragmentNowPlayingMovieListBinding
 import com.olg.bakhur.domain.model.dto.NowPlayingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.presentation.ui.now_playing.adapter.NowPlayingMovieListAdapter
 import com.olg.bakhur.presentation.ui.viewModel
 
@@ -25,6 +23,7 @@ class NowPlayingMovieListFragment : Fragment() {
 
     private val viewModel by viewModel { App.component.nowPlayingMovieViewModel }
     private var movieList: MutableList<NowPlayingMovie> = ArrayList()
+    private val rvAdapter by lazy { NowPlayingMovieListAdapter(this@NowPlayingMovieListFragment::openDetails) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         bindingInst = FragmentNowPlayingMovieListBinding.inflate(inflater, container, false)
@@ -46,15 +45,10 @@ class NowPlayingMovieListFragment : Fragment() {
 
     private fun setupRecyclerView(list: MutableList<NowPlayingMovie>) {
         binding.recyclerNowPlayingMovieList.apply {
-            adapter = NowPlayingMovieListAdapter(object : OnItemClickListener {
-                override fun openDetails(id: Int) {
-                    navigateToMovieDetailsFragment(id)
-                }
-            })
-            (adapter as NowPlayingMovieListAdapter).nowPlayingMoviesList = list
-            layoutManager =
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            adapter = rvAdapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
+        rvAdapter.nowPlayingMoviesList = list
     }
 
     private fun fetchData(){
@@ -62,12 +56,11 @@ class NowPlayingMovieListFragment : Fragment() {
             .observe(
                 viewLifecycleOwner, Observer { list: List<NowPlayingMovie> ->
                     movieList = list as MutableList<NowPlayingMovie>
-                    val adapter = binding.recyclerNowPlayingMovieList.adapter as NowPlayingMovieListAdapter
-                    adapter.setData(movieList)
+                    rvAdapter.setData(movieList)
                 })
     }
 
-    fun navigateToMovieDetailsFragment(id: Int) {
+    private fun openDetails(id: Int) {
         val action = NowPlayingMovieListFragmentDirections
             .actionNowPlayingMovieListFragmentToMovieDetailsFragment(id)
 

@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.olg.bakhur.common.AppConstants
 import com.olg.bakhur.domain.model.dto.UpcomingMovie
-import com.olg.bakhur.presentation.ui.common.OnItemClickListener
 import com.olg.bakhur.databinding.ItemNowPlayingMovieBinding as Binding
 
 class UpcomingMovieListAdapter(
-    private val onItemClickListener: OnItemClickListener
+    private val openDetails: (itemId: Int) -> Unit
     ) : RecyclerView.Adapter<UpcomingMovieListAdapter.ItemViewHolder>() {
 
     var upcomingMoviesList: MutableList<UpcomingMovie> = ArrayList()
@@ -18,11 +17,11 @@ class UpcomingMovieListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemBinding = Binding.inflate(layoutInflater, parent, false)
-        return ItemViewHolder(itemBinding)
+        return ItemViewHolder(itemBinding, openDetails)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(upcomingMoviesList[position], onItemClickListener)
+        holder.bind(upcomingMoviesList[position])
     }
 
     override fun getItemCount(): Int = upcomingMoviesList.size
@@ -35,9 +34,12 @@ class UpcomingMovieListAdapter(
         notifyDataSetChanged()
     }
 
-    class ItemViewHolder(private val binding: Binding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder(
+        private val binding: Binding,
+        private val openDetails: (itemId: Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(upcomingMovie: UpcomingMovie, onItemClickListener: OnItemClickListener) {
+        fun bind(upcomingMovie: UpcomingMovie) {
             with(itemView){
                 binding.textViewMovieTitleItem.text = upcomingMovie.title
                 binding.textViewAverageVoteItem.text = upcomingMovie.voteAverage.toString()
@@ -46,8 +48,7 @@ class UpcomingMovieListAdapter(
                 Glide.with(itemView.context)
                     .load(posterAddress)
                     .into(binding.imageViewPosterItem)
-
-                setOnClickListener { onItemClickListener.openDetails(upcomingMovie.id) }
+                setOnClickListener { openDetails(upcomingMovie.id) }
             }
         }
     }

@@ -5,13 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.olg.bakhur.common.AppConstants
-import com.olg.bakhur.databinding.ItemPopularMovieBinding as Binding
 import com.olg.bakhur.domain.model.dto.PopularMovie
-import com.olg.bakhur.presentation.ui.common.OnItemClickListener
-
+import com.olg.bakhur.databinding.ItemPopularMovieBinding as Binding
 
 class PopularMovieListAdapter(
-    private val onItemClickListener: OnItemClickListener
+    private val openDetails: (itemId: Int) -> Unit
 ) : RecyclerView.Adapter<PopularMovieListAdapter.ItemViewHolder>() {
 
     var popularMoviesList: MutableList<PopularMovie> = ArrayList()
@@ -19,11 +17,11 @@ class PopularMovieListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemBinding = Binding.inflate(layoutInflater, parent, false)
-        return ItemViewHolder(itemBinding)
+        return ItemViewHolder(itemBinding, openDetails)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(popularMoviesList[position], onItemClickListener)
+        holder.bind(popularMoviesList[position])
     }
 
     override fun getItemCount(): Int = popularMoviesList.size
@@ -36,9 +34,12 @@ class PopularMovieListAdapter(
         notifyDataSetChanged()
     }
 
-    class ItemViewHolder(private val binding: Binding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder(
+        private val binding: Binding,
+        private val openDetails: (itemId: Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(popularMovie: PopularMovie, onItemClickListener: OnItemClickListener) {
+        fun bind(popularMovie: PopularMovie) {
             with(itemView){
                 binding.textViewMovieTitleItem.text = popularMovie.title
                 binding.textViewAverageVoteItem.text = popularMovie.voteAverage.toString()
@@ -47,8 +48,7 @@ class PopularMovieListAdapter(
                 Glide.with(itemView.context)
                     .load(posterAddress)
                     .into(binding.imageViewPosterItem)
-
-                setOnClickListener { onItemClickListener.openDetails(popularMovie.id) }
+                setOnClickListener { openDetails(popularMovie.id) }
             }
         }
     }
