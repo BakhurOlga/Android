@@ -23,7 +23,7 @@ class MovieDetailsFragment : Fragment() {
     private val args: MovieDetailsFragmentArgs by navArgs()
     private var movieId: Int? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         bindingInst = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,7 +35,7 @@ class MovieDetailsFragment : Fragment() {
         movieId = args.movieId
         movieId?.let {
             viewModel.getMovieDetails(it, AppConstants.apiKey)
-                .observe(MovieDetailsFragment@ this, Observer { movieDetails: MovieDetails ->
+                .observe(viewLifecycleOwner, Observer { movieDetails: MovieDetails ->
                     with(movieDetails) {
                         binding.textViewMovieTitle.text = title
                         binding.textViewAverageVote.text = voteAverage.toString()
